@@ -1,0 +1,4 @@
+.main {
+  @apply z-40 bg-white;
+  box-shadow: 0 5px 6px -7px rgb(0 0 0 / 60%), 0 2px 4px -5px rgb(0 0 0 / 6%);
+}

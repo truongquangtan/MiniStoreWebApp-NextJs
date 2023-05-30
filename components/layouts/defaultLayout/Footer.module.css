@@ -1,0 +1,19 @@
+.main {
+  @apply flex items-center px-6 md:px-8 bg-gray-800 h-[66px];
+}
+
+.body {
+  @apply flex items-center w-full max-w-[1650px] mx-auto;
+}
+
+.logo {
+  @apply flex items-center;
+}
+
+.rightNav {
+  @apply flex items-center justify-end ml-auto;
+}
+
+.rightNav > span {
+  max-width: 80% !important;
+}
