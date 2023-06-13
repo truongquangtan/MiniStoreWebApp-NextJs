@@ -1,13 +1,10 @@
-import { Dialog } from "@headlessui/react"
-import Card from "../card"
-import Button from "../button"
 import { buttonTypes } from "@/common/type"
-import TextInput from "../form/text_input"
+import { Dialog } from "@headlessui/react"
 import { useState } from "react"
-import SwitchButton from "../form/switch_button"
-import Label from "../form/label"
+import Button from "../button"
+import Card from "../card"
 import FormErrorText from "../form/error_text"
-export default function Modal({isOpen, onConfirm, confirmText, onClose, width, headerName, bodyTemplate, buttonsTemplate, error}) {
+export default function Modal({ isOpen, onConfirm, confirmText, onClose, width, headerName, bodyTemplate, buttonsTemplate, error }) {
   const [inputValue, setInputValue] = useState('')
   const [enabledSwitch, setEnabledSwitch] = useState(false)
   return (
@@ -26,11 +23,11 @@ export default function Modal({isOpen, onConfirm, confirmText, onClose, width, h
             <div className="p-4 flex items-center justify-between">
               {error ? <FormErrorText>{error}</FormErrorText> : <div> </div>}
               {buttonsTemplate || (
-              <div className="flex items-center justify-end">
-                <Button type={buttonTypes.PRIMARY} onClick={() => onConfirm()}>{confirmText ? confirmText : `Create`}</Button>
-                <Button type={buttonTypes.DEFAULT} onClick={() => onClose()}>Cancel</Button>
-              </div>
-            )}
+                <div className="flex items-center justify-end">
+                  <Button type={buttonTypes.PRIMARY} onClick={() => onConfirm()}>{confirmText ? confirmText : `Create`}</Button>
+                  <Button type={buttonTypes.DEFAULT} onClick={() => onClose()}>Cancel</Button>
+                </div>
+              )}
             </div>
           </Dialog.Panel>
         </Card>

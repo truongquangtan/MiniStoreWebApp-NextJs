@@ -1,12 +1,17 @@
-import myAxios from "@/common/myAxios"
+import myAxios, { wrapperCallApi } from "@/common/myAxios"
 import url from "@/common/url"
 
-const getAllRoles = async () => {
-    const serviceUrl = url.role.base
-    const response = await myAxios.get(serviceUrl)
-    return response ? response.data : response
+
+class RoleService {
+
+    static async getAllRoles() {
+        const serviceUrl = url.role.base
+
+        return await wrapperCallApi(
+            myAxios.get(serviceUrl)
+        )
+    }
 }
 
-export default {
-    getAllRoles, 
-}
+
+export default RoleService
