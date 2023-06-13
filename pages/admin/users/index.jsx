@@ -537,7 +537,7 @@ const User = ({ user, refetch }) => {
 
                                     </div>
 
-                                    <label className="space-y-1">
+                                    <label className="space-y-1 pointer-events-none">
 
                                         <p className="text-gray-700 text-center">Avatar</p>
 
@@ -546,6 +546,7 @@ const User = ({ user, refetch }) => {
                                                 value={''}
                                                 name="avatar"
                                                 type="file"
+
                                                 className="hidden"
                                                 onChange={e => setFieldValue("avatar", e.target.files[0])}
                                                 onBlur={handleBlur}
@@ -727,8 +728,6 @@ export default function Index() {
     useEffect(() => {
         fetchUser()
     }, [])
-
-    console.log(users);
 
 
     return (
