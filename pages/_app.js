@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import { useRouter } from 'next/router'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import AppContextWrapper from '@/context/app-context'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -15,9 +16,11 @@ export default function App({ Component, pageProps }) {
   if(isInAdminPage()){
     return (
       <>
-        <AdminLayout>
-          <Component {...pageProps} />
-        </AdminLayout>
+        <AppContextWrapper>
+          <AdminLayout>
+            <Component {...pageProps} />
+          </AdminLayout>
+        </AppContextWrapper>
         <ToastContainer
           position='top-right'
           autoClose={3000}
