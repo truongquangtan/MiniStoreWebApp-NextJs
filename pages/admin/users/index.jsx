@@ -738,7 +738,7 @@ export default function Index() {
       <Head>
         <title>Users Management</title>
       </Head>
-      <div className="space-y-10 border rounded shadow bg-white p-2">
+      <div className="border rounded shadow bg-white p-2">
         <div className="p-5 flex items-center justify-between">
           <div className="font-bold text-xl text-gray-800">Users</div>
           <button onClick={setDisplayCreate.toggle}>

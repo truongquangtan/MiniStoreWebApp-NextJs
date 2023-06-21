@@ -6,6 +6,10 @@ const url = {
     },
     role: {
         base: `${host}/roles`
+    },
+    worksheet: {
+        base: `${host}/timesheet`,
+        getAll: `${host}/timesheet/all`,
     }
 }
 

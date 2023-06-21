@@ -3,11 +3,11 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import FormErrorText from '../error_text'
 
-export default function SelectBox({options, selected, setSelected, labelTemplate, placeholder, error, ...props}) {
+export default function SelectBox({options, selected, setSelected, labelTemplate, placeholder, error, isError, onOptionClick, fieldName, ...props}) {
   return (
     <div>
       <Listbox value={selected} onChange={setSelected}>
-        <div className="relative mb-2">
+        <div className="relative mb-2" aria-invalid={isError}>
           <Listbox.Label>{labelTemplate}</Listbox.Label>
           <Listbox.Button className="relative border border-gray-300 text-gray-900 text-sm rounded-md text-left w-full p-2.5">
             <span className="block truncate">{selected ? selected.name : placeholder}</span>
@@ -34,6 +34,7 @@ export default function SelectBox({options, selected, setSelected, labelTemplate
                     }`
                   }
                   value={option}
+                  onClick={() => onOptionClick(fieldName, option, true)}
                 >
                   {({ selected }) => (
                     <>
