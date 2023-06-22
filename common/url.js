@@ -7,6 +7,12 @@ const url = {
     role: {
         base: `${host}/roles`
     },
+    product: {
+        base: `${host}/products`,
+    },
+    category: {
+        base: `${host}/categories`,
+    },
     worksheet: {
         base: `${host}/timesheet`,
         getAll: `${host}/timesheet/all`,
