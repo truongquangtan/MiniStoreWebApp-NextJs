@@ -1,5 +1,6 @@
 const REGEX = {
     phone: /^[0-9]/,
+    number: /^[0-9]/,
     noBlank: /\S+/,
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,255}$/,
     username: /^[a-zA-Z0-9]{4,}$/,
