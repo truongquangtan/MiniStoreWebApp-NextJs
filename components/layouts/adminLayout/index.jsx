@@ -2,6 +2,9 @@ import Sidebar from '@/components/sidebar'
 import Breadcrumb from './breadcrumb'
 import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '@/context/app-context'
+import { useRouter } from 'next/router'
+import { getRole } from '@/common/authStore'
+import constants from '@/common/constants'
 
 const AdminLayout = (props) => {
   const [pageName, setPageName] = useContext(AppContext)

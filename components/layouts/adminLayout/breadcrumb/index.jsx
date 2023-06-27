@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import Dropdown from "components/dropdown";
@@ -8,9 +8,42 @@ import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import {
   IoMdNotificationsOutline,
 } from "react-icons/io";
+import { getAvatar, getName, getRole, removeAllData } from "@/common/authStore";
+import constants from "@/common/constants";
+import { useRouter } from "next/router";
+
 const Breadcrumb = (props) => {
+  const router = useRouter()
   const { onOpenSidenav, brandText } = props;
-  const [darkmode, setDarkmode] = React.useState(false);
+
+  const [avatar, setAvatar] = useState('')
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+
+  useEffect(() => {
+    setAvatar(getAvatar())
+
+    const fullname = getName()
+    const lastName = fullname.split(' ')
+    setName(lastName[lastName.length - 1])
+
+    const role = getRole()
+    if(role == constants.roleIdConstant.MANAGER){
+      setRole('Manager')
+    }
+    if(role == constants.roleIdConstant.SALES){
+      setRole('Sales')
+    }
+    if(role == constants.roleIdConstant.GUARD){
+      setRole('Guard')
+    }
+  }, [])
+
+  const onLogoutClick = () => {
+    removeAllData()
+    router.push('/auth/login')
+  }
+
   return (
     <nav className="my-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl backdrop-blur-xl dark:bg-[#0b14374d]">
       <div>
@@ -102,18 +135,21 @@ const Breadcrumb = (props) => {
         <Dropdown
           button={
             <img
-              className="h-10 w-10 rounded-full"
-              src="/img/avatars/avatar4.png"
+              className="block w-10 h-10 object-cover rounded-full"
+              src={avatar}
               alt="Elon Musk"
             />
           }
           children={
-            <div className="flex h-48 w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-              <div className="mt-3 ml-4">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, Adela
-                  </p>{" "}
+            <div className="flex pb-4 w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
+              <div className="mt-3 mx-4">
+                <div className="flex justify-between items-center gap-2">
+                  <p className="text-sm font-bold text-navy-700">
+                    👋 Hello, {name}
+                  </p>
+                  <p className="text-sm font-bold text-green-700">
+                    [{role}]
+                  </p>
                 </div>
               </div>
               <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 " />
@@ -121,26 +157,20 @@ const Breadcrumb = (props) => {
               <div className="mt-3 ml-4 flex flex-col">
                 <a
                   href=" "
-                  className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
+                  className="text-sm text-gray-800 hover:font-medium"
                 >
                   Profile Settings
                 </a>
-                <a
-                  href=" "
-                  className="mt-3 text-sm text-gray-800 dark:text-white hover:dark:text-white"
-                >
-                  Newsletter Settings
-                </a>
-                <a
-                  href=" "
-                  className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                <div
+                  onClick={() => onLogoutClick()}
+                  className="mt-3 text-sm font-medium text-red-500 hover:font-bold hover:cursor-pointer"
                 >
                   Log Out
-                </a>
+                </div>
               </div>
             </div>
           }
-          classNames={"py-2 top-8 -left-[180px] w-max"}
+          classNames={"py-2 top-12 -left-[180px] w-max"}
         />
       </div>
     </nav>

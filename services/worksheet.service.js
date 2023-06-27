@@ -1,4 +1,4 @@
-import myAxios, { wrapperCallApi } from "@/common/myAxios"
+import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 
@@ -6,7 +6,7 @@ class WorksheetService {
     static async getAll() {
         const serviceUrl = url.worksheet.getAll
         return await wrapperCallApi(
-            myAxios.get(serviceUrl)
+            useMyAxios().get(serviceUrl)
         )
     }
 
@@ -14,7 +14,7 @@ class WorksheetService {
         const serviceUrl = url.worksheet.base
 
         return await wrapperCallApi(
-            myAxios.post(
+            useMyAxios().post(
                 serviceUrl,
                 payload,
                 {
@@ -29,7 +29,7 @@ class WorksheetService {
     static async delete(id) {
         const serviceUrl = `${url.worksheet.base}/${id}`
         return await wrapperCallApi(
-            myAxios.delete(
+            useMyAxios().delete(
                 serviceUrl,
             )
         )

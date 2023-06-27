@@ -14,24 +14,8 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 
-const CreateProduct = ({ setFlag, refetch }) => {
-
-    const [categories, setCategories] = useState([])
+const CreateProduct = ({ setFlag, refetch, categories }) => {
     const [imageSrc, setImageSrc] = useState(undefined)
-
-
-    useEffect(() => {
-        (
-            async () => {
-                const { error, data } = await CategoryService.getAll()
-                if (error) {
-                    return
-                }
-
-                setCategories(data)
-            }
-        )()
-    }, [])
 
     const formId = useId()
     const formik = useFormik(
@@ -319,25 +303,10 @@ const CreateProduct = ({ setFlag, refetch }) => {
     )
 }
 
-const Product = ({ product, refetch }) => {
+const Product = ({ product, categories, refetch }) => {
     const { id } = product
     const [displayUpdate, setDisplayUpdate] = useBoolean(false)
-    const [categories, setCategories] = useState([])
     const [imageSrc, setImageSrc] = useState(undefined)
-
-
-    useEffect(() => {
-        (
-            async () => {
-                const { error, data } = await CategoryService.getAll()
-                if (error) {
-                    return
-                }
-
-                setCategories(data)
-            }
-        )()
-    }, [])
 
     const formId = useId()
     const formik = useFormik(
@@ -680,6 +649,7 @@ export default function Index() {
     const [pageName, setPageName] = useContext(AppContext)
 
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
     const [displayCreate, setDisplayCreate] = useBoolean(false)
 
@@ -692,8 +662,15 @@ export default function Index() {
         }
         setLoading(false)
     }, [])
+    const fetchCategories = async () => {
+        const { error, data } = await CategoryService.getAll()
+        if (!error) {
+            setCategories(data)
+        }
+    }
 
     useEffect(() => {
+        fetchCategories()
         fetchProduct()
         setPageName("User Management")
     }, [])
@@ -726,7 +703,7 @@ export default function Index() {
                                     <div className="grow font-medium">Description</div>
                                 </li>
                                 {
-                                    products.map(product => <Product key={product.id} product={product} refetch={fetchProduct} />)
+                                    products.map(product => <Product key={product.id} product={product} categories={categories} refetch={fetchProduct} />)
                                 }
                             </ul>
                         </div>
@@ -735,7 +712,7 @@ export default function Index() {
             </div>
             {
                 displayCreate ? (
-                    <CreateProduct setFlag={setDisplayCreate} refetch={fetchProduct} />
+                    <CreateProduct setFlag={setDisplayCreate} refetch={fetchProduct} categories={categories} />
                 ) : null
             }
         </>

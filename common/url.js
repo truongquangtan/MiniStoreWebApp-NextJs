@@ -16,6 +16,10 @@ const url = {
     worksheet: {
         base: `${host}/timesheet`,
         getAll: `${host}/timesheet/all`,
+    },
+    auth: {
+        login: `${host}/auth/login`,
+        logout: `${host}/auth/logout`,
     }
 }
 

@@ -4,9 +4,26 @@ import { HiX } from "react-icons/hi";
 import Links from "./components/Links";
 
 import routes from "routes.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getRole } from "@/common/authStore";
+import constants from "@/common/constants";
 
 const Sidebar = ({ open, onClose }) => {
+  const [routesValue, setRoutesValue] = useState([])
+
+  useEffect(() => {
+    const role = getRole()
+    if(role == constants.roleIdConstant.MANAGER){
+      setRoutesValue(routes.manager)
+    }
+    if(role == constants.roleIdConstant.SALES){
+      setRoutesValue(routes.sales)
+    }
+    if(role == constants.roleIdConstant.GUARD){
+      setRoutesValue(routes.guard)
+    }
+  }, [])
+
   return (
     <div
       className={`flex sm:none duration-175 linear fixed !z-50 min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 ${
@@ -29,7 +46,7 @@ const Sidebar = ({ open, onClose }) => {
       {/* Nav item */}
 
       <ul className="w-[300px] mb-auto pt-1">
-        <Links routes={routes} />
+        <Links routes={routesValue} />
       </ul>
 
       {/* Nav item end */}

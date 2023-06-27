@@ -4,6 +4,20 @@ const roleIdConstant = {
     GUARD: 3,
 }
 
+const localStorageKey = {
+    role: 'role',
+    token: 'token',
+    avatar: 'avatar',
+    name: 'name',
+}
+
+const defaultRoute = {
+    MANAGER: '/manager/users',
+    SALES: '/sales/worksheet',
+    GUARD: '/guard/worksheet',
+    UNAUTHENTICATED: '/auth/login',
+}
+
 export default {
-    roleIdConstant,
+    roleIdConstant, localStorageKey, defaultRoute
 }

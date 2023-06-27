@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import Button from "@/components/button";
 import { buttonTypes } from "@/common/type";
 import constants from "@/common/constants";
+import moment from "moment/moment";
 
 export default function Index(props) {
   const [pageName, setPageName] = useContext(AppContext)
@@ -181,6 +182,26 @@ export default function Index(props) {
           <CreateWorksheet setFlag={setDisplayCreate} refetch={fetchWorksheets} />
         ) : null
       }
+      <div className="border rounded shadow bg-white p-2 mt-10">
+        <div className="flex items-center gap-1 mb-1">
+          <div className="w-8 h-8 grow text-center"></div>
+          <div className="w-12 h-8 grow text-center">Ca sáng (06:00-12:00)</div>
+          <div className="w-12 h-8 grow text-center">Ca chiều (12:00-18:00)</div>
+          <div className="w-12 h-8 grow text-center">Ca tối (18:00-00:00)</div>
+        </div>
+        <div className="flex items-center gap-1 mb-1">
+          <div className="w-8 h-8 grow text-center">25/06/2023</div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-8 h-8 grow text-center">{moment(new Date()).format("dddd, DD/MM/YYYY")}</div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+          <div className="w-12 h-8 grow hover:bg-blue-200 hover:cursor bg-gray-100"></div>
+        </div>
+      </div>
     </div>
   )
 }

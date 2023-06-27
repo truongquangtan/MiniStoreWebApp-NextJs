@@ -1,4 +1,4 @@
-import myAxios, { wrapperCallApi } from "@/common/myAxios"
+import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 
@@ -8,7 +8,7 @@ class RoleService {
         const serviceUrl = url.role.base
 
         return await wrapperCallApi(
-            myAxios.get(serviceUrl)
+            useMyAxios().get(serviceUrl)
         )
     }
 }
