@@ -27,11 +27,6 @@ export function SidebarLinks(props) {
     setRoutesValue([... newValue])
   }, [routes, router.pathname])
 
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = useCallback((routeName) => {    
-    return router.pathname.includes(routeName);
-  }, []);
-
   const createLinks = (routes) => {
     return routesValue.map((route, index) => {
       return (

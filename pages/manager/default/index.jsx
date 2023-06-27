@@ -55,8 +55,8 @@ export default function Index() {
     }
 
     return (
-        <div className="h-[100vh]">
-            <Scheduler events={event} week={weekConfig} editable={false} hourFormat="24"/>
+        <div className="h-[100vh] relative z-[1]">
+            <Scheduler events={event} week={weekConfig} day={null} month={null} editable={false} deletable={false} hourFormat="24" />
         </div>
     )
 }

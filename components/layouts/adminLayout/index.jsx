@@ -5,8 +5,10 @@ import { AppContext } from '@/context/app-context'
 import { useRouter } from 'next/router'
 import { getRole } from '@/common/authStore'
 import constants from '@/common/constants'
+import routes from '@/routes'
 
 const AdminLayout = (props) => {
+  const router = useRouter()
   const [pageName, setPageName] = useContext(AppContext)
 
   const [open, setOpen] = useState(true)
@@ -16,9 +18,16 @@ const AdminLayout = (props) => {
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
     )
 
-    const url = window.location.href
-    setPageName(url.split("/")[4])
-  }, []);
+    const path = router.pathname
+    const role = getRole()
+    const routesValue = role == constants.roleIdConstant.GUARD ? routes.guard : role == constants.roleIdConstant.MANAGER ? routes.manager : routes.sales
+    routesValue.forEach(v => {
+      const fullPath = `${v.layout}/${v.path}`
+      if(fullPath === path){
+        setPageName(v.name)
+      }
+    })
+  }, [router.route]);
   return (
     <>
       <Sidebar open={open} onClose={() => setOpen(false)}/>

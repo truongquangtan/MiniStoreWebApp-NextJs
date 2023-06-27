@@ -10,6 +10,13 @@ class WorksheetService {
         )
     }
 
+    static async getByRole(startDate, dateAddInCount) {
+        const serviceUrl = `${url.worksheet.getByRole}?startDate=${startDate}&addIn=${dateAddInCount}`
+        return await wrapperCallApi(
+            useMyAxios().get(serviceUrl)
+        )
+    }
+
     static async create(payload) {
         const serviceUrl = url.worksheet.base
 
