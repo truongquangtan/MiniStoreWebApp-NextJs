@@ -9,7 +9,8 @@ import {
   MdViewTimeline,
   MdSell,
   MdPermIdentity,
-  MdAddCard
+  MdAddCard,
+  MdCalendarMonth
 } from "react-icons/md";
 
 const routes = {
@@ -54,6 +55,13 @@ const routes = {
       layout: "/manager",
       path: "worksheet",
       icon: <MdViewTimeline className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
+      name: "Worksheets Schedule",
+      layout: "/manager",
+      path: "worksheet-schedule",
+      icon: <MdCalendarMonth className="h-6 w-6" />,
       isActive: false,
     },
     {

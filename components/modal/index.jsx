@@ -1,6 +1,5 @@
 import { buttonTypes } from "@/common/type"
 import { Dialog } from "@headlessui/react"
-import { useState } from "react"
 import Button from "../button"
 import Card from "../card"
 import FormErrorText from "../form/error_text"

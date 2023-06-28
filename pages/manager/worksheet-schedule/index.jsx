@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { MdDelete, MdKeyboardArrowDown, MdKeyboardArrowRight, MdOutlineDataExploration, MdScheduleSend } from "react-icons/md";
+import { MdDelete, MdKeyboardArrowDown, MdKeyboardArrowRight, MdFlag } from "react-icons/md";
 import WorksheetService from "@/services/worksheet.service";
 import { toast } from "react-toastify";
 import { IconButton, Tooltip } from "@mui/material";
@@ -9,6 +9,183 @@ import { buttonTypes } from "@/common/type";
 import TimesheetRegisterService from "@/services/timesheet-register.service";
 import Loading from "@/components/loading";
 import ModalComponent from "@/components/modal";
+import MultiSelect from "@/components/multi-select";
+
+const data = [
+  {
+    "date": "2023-06-28T00:00:00",
+    "timesheetData": [
+      {
+        "timesheetId": "fd68b9e3-91df-43da-b045-d40807a2c7d4",
+        "name": "Ca sáng",
+        "startTime": "00:00",
+        "endTime": "06:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": true,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          },
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn B",
+          }
+        ],
+        "schedulerData": [
+          {
+            "scheduleId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ]
+      },
+      {
+        "timesheetId": "98a1ee44-2d1d-466f-8539-e6a7738bf237",
+        "name": "Ca hybrid",
+        "startTime": "02:00",
+        "endTime": "08:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": false,
+        "isScheduled": false,
+        "registerData": [],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "abff4e43-5c5c-43b6-a656-890b3c27e6be",
+        "name": "Ca chiều",
+        "startTime": "12:00",
+        "endTime": "15:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": false,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "c84ef420-ae31-415b-a169-fcc5b0c1ad7f",
+        "name": "Ca tối",
+        "startTime": "16:00",
+        "endTime": "22:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": false,
+        "isScheduled": false,
+        "registerData": [],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "af827ca3-0ebe-45e0-af5f-db0fe371fc2b",
+        "name": "Ca khuya",
+        "startTime": "20:00",
+        "endTime": "02:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": false,
+        "isScheduled": false,
+      }
+    ]
+  },
+  {
+    "date": "2023-06-29T00:00:00",
+    "timesheetData": [
+      {
+        "timesheetId": "fd68b9e3-91df-43da-b045-d40807a2c7d4",
+        "name": "Ca sáng",
+        "startTime": "00:00",
+        "endTime": "06:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": false,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "98a1ee44-2d1d-466f-8539-e6a7738bf237",
+        "name": "Ca hybrid",
+        "startTime": "02:00",
+        "endTime": "08:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": false,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "abff4e43-5c5c-43b6-a656-890b3c27e6be",
+        "name": "Ca chiều",
+        "startTime": "12:00",
+        "endTime": "15:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": false,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "c84ef420-ae31-415b-a169-fcc5b0c1ad7f",
+        "name": "Ca tối",
+        "startTime": "16:00",
+        "endTime": "22:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": true,
+        "isScheduled": false,
+        "registerData": [
+          {
+            "registerId": "abc",
+            "userId": "abc",
+            "userName": "Nguyễn Văn A",
+          }
+        ],
+        "schedulerData": []
+      },
+      {
+        "timesheetId": "af827ca3-0ebe-45e0-af5f-db0fe371fc2b",
+        "name": "Ca khuya",
+        "startTime": "20:00",
+        "endTime": "02:00",
+        "salary": "25000.0",
+        "note": "",
+        "isPicked": false,
+        "isScheduled": false,
+      }
+    ]
+  }
+]
 
 export default function Index(props) {
   const [isRequestTabOpen, setIsRequestTabOpen] = useState(false)
@@ -38,7 +215,7 @@ export default function Index(props) {
       t.timesheetData = t.timesheetData.map(v => { return { ...v, isSelected: false } })
       return t
     })
-    setSalaryTimesheets([... salaryTimesheetsData])
+    setSalaryTimesheets([...salaryTimesheetsData])
   }
   const fetchRequestedTimesheet = async () => {
     setIsTableLoading(true)
@@ -132,9 +309,22 @@ export default function Index(props) {
     fetchRequestedTimesheet()
   }
 
+  const getListOfNameRegistered = (timesheetCell) => {
+    let stringRepresented = ""
+    for (let i = 0; i < timesheetCell.registerData.length; i++) {
+      const data = timesheetCell.registerData[i].userName
+      stringRepresented += data
+      if (i != timesheetCell.registerData.length - 1) {
+        stringRepresented += ", "
+      }
+    }
+    return stringRepresented
+  }
+
   useEffect(() => {
-    fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
-    fetchRequestedTimesheet()
+    setSalaryTimesheets(data)
+    // fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
+    // fetchRequestedTimesheet()
   }, [])
 
   return (
@@ -142,6 +332,7 @@ export default function Index(props) {
       {/* Delete Modal */}
       <ModalComponent
         bodyTemplate={(<div>Do you want to delete this request?</div>)}
+        headerName="Delete confirm"
         buttonsTemplate={(
           <div className="flex items-center justify-end w-full">
             <Button type={buttonTypes.DANGER} onClick={() => onDeleteConfirm()}>Confirm</Button>
@@ -153,8 +344,35 @@ export default function Index(props) {
         width={`w-[60vw]`}
         absoluteTop="top-24"
       />
-      
-      {/* Main contain */}
+
+      {/* Schedule Modal */}
+      <ModalComponent
+        bodyTemplate={(<MultiSelect labelText="Users" options={[
+  {
+    id: 1,
+    label: "Nguyễn Văn A",
+    image: "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16"
+  },
+  {
+    id: 2,
+    label: "Nguyễn Văn B",
+    image: "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16"
+  },
+]} />)}
+        headerName="Schedule Modal"
+        buttonsTemplate={(
+          <div className="flex items-center justify-end w-full">
+            <Button type={buttonTypes.DANGER} onClick={() => onDeleteConfirm()}>Confirm</Button>
+            <Button type={buttonTypes.DEFAULT} onClick={() => setIsModalDeleteActive(false)}>Cancel</Button>
+          </div>
+        )}
+        isOpen={true}
+        onClose={() => setIsModalDeleteActive(false)}
+        width={`w-[60vw]`}
+        absoluteTop="top-24"
+      />
+
+      {/* Main Content */}
       <main className="border rounded shadow bg-white p-2">
         <div className="flex items-center justify-between hover:cursor-pointer" onClick={() => setIsRequestTabOpen(!isRequestTabOpen)}>
           <div className="font-bold text-2xl p-2 text-gray-800">Request a timesheet</div>
@@ -179,24 +397,15 @@ export default function Index(props) {
                   {salaryTimesheet.timesheetData.map(timesheetCell => (
                     <div
                       key={`${timesheetCell.timesheetId}${salaryTimesheet.date}`}
-                      className={`${timesheetCell.isSelected === true ? 'bg-blue-200 hover:bg-red-400' : 'bg-gray-100 hover:bg-blue-200'} ${timesheetCell.isPicked === true ? '!bg-gray-300' : 'hover:cursor-pointer'} w-12 h-8 flex items-center relative justify-center font-sm font-semibold text-center grow`}
+                      className={`bg-gray-100 hover:bg-blue-200 hover:cursor-pointer w-12 h-8 flex items-center relative justify-center font-sm font-semibold text-center grow`}
                       onClick={() => { if (!timesheetCell.isPicked) { onCellClick(salaryTimesheet, timesheetCell) } }}
                     >
                       {timesheetCell.salary}
-                      {timesheetCell.note ?
-                        (<Tooltip title={timesheetCell.note} placement="top" arrow>
+                      {timesheetCell.isPicked === true ?
+                        (<Tooltip title={getListOfNameRegistered(timesheetCell)} placement="top" arrow>
                           <div className="absolute right-1">
                             <IconButton disableFocusRipple={true} disableRipple={true}>
-                              <MdOutlineDataExploration className="h-6 w-6 text-green-700 " />
-                            </IconButton>
-                          </div>
-
-                        </Tooltip>) : ''}
-                      {timesheetCell.isPicked ?
-                        (<Tooltip title="You picked it, click to unset" placement="top" arrow>
-                          <div className="absolute left-1">
-                            <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => onDeleteClick(timesheetCell.registerId)}>
-                              <MdScheduleSend className="h-5 w-5 text-blue-700" />
+                              <MdFlag className="h-4 w-4 text-blue-700 " />
                             </IconButton>
                           </div>
 
