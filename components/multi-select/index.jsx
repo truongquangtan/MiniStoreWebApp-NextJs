@@ -25,15 +25,13 @@ import { Avatar } from '@mui/material';
 */
 
 
-export default function MultiSelect({options, labelText}) {
-  const [objectIds, setObjectIds] = React.useState([])
-
+export default function MultiSelect({options, selectedIds, setSelectedIds, labelText}) {
   const handleChange = (event) => {
     const {
       target: { value },
     } = event
 
-    setObjectIds(value === 'string' ? value.split(',') : value,)
+    setSelectedIds(value === 'string' ? value.split(',') : value,)
   }
 
   return (
@@ -44,7 +42,7 @@ export default function MultiSelect({options, labelText}) {
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={objectIds}
+          value={selectedIds}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label={labelText} />}
           renderValue={(selected) => (

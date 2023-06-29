@@ -24,6 +24,10 @@ const url = {
         register: `${host}/timesheet/register-reference`,
         deleteRange: `${host}/timesheet/register-reference/delete-range`
     },
+    timesheetScheduler: {
+        schedule: `${host}/timesheet/register`,
+        getAllScheduled: `${host}/timesheet/register/all`,
+    },
     auth: {
         login: `${host}/auth/login`,
         logout: `${host}/auth/logout`,

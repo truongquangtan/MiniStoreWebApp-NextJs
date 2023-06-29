@@ -4,7 +4,7 @@ import url from "@/common/url"
 
 class TimesheetRegisterService {
     static async getRequestedTimesheets(startDate, endDate) {
-        const serviceUrl = `${url.timesheetRegister.getRequestedTimesheets}?startDate=${startDate}&endDate=${endDate?endDate:''}`
+        const serviceUrl = `${url.timesheetRegister.getRequestedTimesheets}?startDate=${startDate ? startDate : ''}&endDate=${endDate?endDate:''}`
 
         return await wrapperCallApi(
             useMyAxios().get(serviceUrl)

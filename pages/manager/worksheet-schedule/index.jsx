@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { MdDelete, MdKeyboardArrowDown, MdKeyboardArrowRight, MdFlag } from "react-icons/md";
+import { MdOutlineAddTask, MdDelete, MdKeyboardArrowDown, MdKeyboardArrowRight, MdFlag, MdPersonAdd } from "react-icons/md";
 import WorksheetService from "@/services/worksheet.service";
 import { toast } from "react-toastify";
 import { Avatar, AvatarGroup, FormLabel, IconButton, Tooltip } from "@mui/material";
@@ -15,198 +15,7 @@ import TextInput from "@/components/form/text_input";
 import SelectBox from "@/components/form/select_box";
 import RoleService from "@/services/role.service";
 import UserService from "@/services/user.service";
-
-const data = [
-  {
-    "date": "2023-06-28T00:00:00",
-    "timesheetData": [
-      {
-        "timesheetId": "fd68b9e3-91df-43da-b045-d40807a2c7d4",
-        "name": "Ca sáng",
-        "startTime": "00:00",
-        "endTime": "06:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": true,
-        "registerData": [
-          {
-            "registerId": "7",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          },
-          {
-            "registerId": "6",
-            "userId": "abc",
-            "userName": "Nguyễn Văn B",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": [
-          {
-            "scheduleId": "abc",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "scheduleAt": "2022-06-28"
-          }
-        ]
-      },
-      {
-        "timesheetId": "98a1ee44-2d1d-466f-8539-e6a7738bf237",
-        "name": "Ca hybrid",
-        "startTime": "02:00",
-        "endTime": "08:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": false,
-        "isScheduled": false,
-        "registerData": [],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "abff4e43-5c5c-43b6-a656-890b3c27e6be",
-        "name": "Ca chiều",
-        "startTime": "12:00",
-        "endTime": "15:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": false,
-        "registerData": [
-          {
-            "registerId": "5",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "c84ef420-ae31-415b-a169-fcc5b0c1ad7f",
-        "name": "Ca tối",
-        "startTime": "16:00",
-        "endTime": "22:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": false,
-        "isScheduled": false,
-        "registerData": [],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "af827ca3-0ebe-45e0-af5f-db0fe371fc2b",
-        "name": "Ca khuya",
-        "startTime": "20:00",
-        "endTime": "02:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": false,
-        "isScheduled": false,
-      }
-    ]
-  },
-  {
-    "date": "2023-06-29T00:00:00",
-    "timesheetData": [
-      {
-        "timesheetId": "fd68b9e3-91df-43da-b045-d40807a2c7d4",
-        "name": "Ca sáng",
-        "startTime": "00:00",
-        "endTime": "06:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": false,
-        "registerData": [
-          {
-            "registerId": "4",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "98a1ee44-2d1d-466f-8539-e6a7738bf237",
-        "name": "Ca hybrid",
-        "startTime": "02:00",
-        "endTime": "08:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": false,
-        "registerData": [
-          {
-            "registerId": "3",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "abff4e43-5c5c-43b6-a656-890b3c27e6be",
-        "name": "Ca chiều",
-        "startTime": "12:00",
-        "endTime": "15:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": false,
-        "registerData": [
-          {
-            "registerId": "2",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "c84ef420-ae31-415b-a169-fcc5b0c1ad7f",
-        "name": "Ca tối",
-        "startTime": "16:00",
-        "endTime": "22:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": true,
-        "isScheduled": false,
-        "registerData": [
-          {
-            "registerId": "1",
-            "userId": "abc",
-            "userName": "Nguyễn Văn A",
-            "avatar": "https://firebasestorage.googleapis.com/v0/b/ministoregrprjprn231.appspot.com/o/Guard-d522c23e-f8eb-4bc8-b518-0463cd32dd3c?alt=media&token=207a06d0-c209-4d09-b11e-edb2a261ee16",
-            "requestAt": "2022-06-28"
-          }
-        ],
-        "schedulerData": []
-      },
-      {
-        "timesheetId": "af827ca3-0ebe-45e0-af5f-db0fe371fc2b",
-        "name": "Ca khuya",
-        "startTime": "20:00",
-        "endTime": "02:00",
-        "salary": "25000.0",
-        "note": "",
-        "isPicked": false,
-        "isScheduled": false,
-      }
-    ]
-  }
-]
+import TimesheetSchedulerService from "@/services/timesheet-scheduler.service";
 
 export default function Index(props) {
   const [isRequestTabOpen, setIsRequestTabOpen] = useState(true)
@@ -215,10 +24,10 @@ export default function Index(props) {
   const [isModalDeleteActive, setIsModalDeleteActive] = useState(false)
   const [timesheets, setTimesheets] = useState([])
 
-  const [requestedTimesheets, setRequestedTimesheets] = useState([])
+  const [scheduledTimesheets, setScheduledTimesheets] = useState([])
   const [deleteId, setDeleteId] = useState('')
   const [isTableLoading, setIsTableLoading] = useState(false)
-  const [curEndDate, setCurEndDate] = useState('')
+  const [curEndDate, setCurEndDate] = useState(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
 
   // The state is a list with the shape: [{date, timesheetsWithSalaryOfDate}]
   const [salaryTimesheets, setSalaryTimesheets] = useState([])
@@ -230,14 +39,19 @@ export default function Index(props) {
   const [curRole, setCurRole] = useState('')
   const [roles, setRoles] = useState([])
   const [users, setUsers] = useState([])
+  const [selectedUserIds, setSelectedUserIds] = useState([])
 
   useEffect(() => {
     fetchRoles()
-    fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
+    curRole?.id && fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
+    setCurEndDate(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
+    fetchScheduledTimesheet(moment(new Date()).format("yyyy-MM-DD"), null)
   }, [])
   useEffect(() => {
-    fetchAllUsersOfRole()
-    fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), Math.ceil(moment(curEndDate, "yyyy-MM-DD").diff(moment(new Date()), "d")) + 1)
+    if(curRole?.id){
+      fetchAllUsersOfRole()
+      fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), Math.ceil(moment(curEndDate, "yyyy-MM-DD").diff(moment(new Date()), "d")) + 1)
+    }
   }, [curRole])
 
   const fetchTimesheetData = async (startDate, addIn) => {
@@ -246,10 +60,19 @@ export default function Index(props) {
       toast.error("Fail to get data")
       return
     }
-    setCurEndDate(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
     setTimesheets(data.timeSheets)
 
     setSalaryTimesheets(data.timesheetsWithSalary)
+  }
+
+  const fetchScheduledTimesheet = async (startDate, endDate) => {
+    const {error, data} = await TimesheetSchedulerService.getScheduledTimesheets(startDate, endDate)
+    if(error){
+      toast.error("Fail to get data")
+      return
+    }
+
+    setScheduledTimesheets(data)
   }
 
   const fetchRoles = async () => {
@@ -275,7 +98,7 @@ export default function Index(props) {
   }
 
   const loadMore7Days = async () => {
-    const { error, data } = await WorksheetService.getByRole(curEndDate, 7)
+    const { error, data } = await WorksheetService.getForSchedule(curEndDate, 7, curRole.id)
     if (error) {
       toast.error("Fail to get data")
       return
@@ -299,10 +122,53 @@ export default function Index(props) {
     const cellData = { ...cell, date: row.date }
     setSelectedTimesheet(cellData)
     setUsersPicked(cellData.registerData ? cellData.registerData : [])
+    if(cellData.scheduleData.length > 0){
+      setSelectedUserIds(cellData.scheduleData.map(d => d.userId))
+    } else {
+      setSelectedUserIds([])
+    }
+  }
+
+  const onAssignClick = (userId) => {
+    if(selectedUserIds.indexOf(userId) === -1) {
+      selectedUserIds.push(userId)
+      setSelectedUserIds([...selectedUserIds])
+    }
   }
 
   const onScheduleConfirm = async () => {
+    // Validation
+    if(selectedUserIds.length == 0){
+      return
+    }
 
+    //Prepare Data
+    const payload = []
+    for(const userId of selectedUserIds){
+      const data = {
+        timesheetId: selectedTimesheet.timesheetId,
+        userId: userId,
+        salary: selectedTimesheet.salary,
+        date: selectedTimesheet.date
+      }
+      payload.push(data)
+    }
+
+    //Call API
+    const {error} = await TimesheetSchedulerService.scheduler(payload)
+    if(error){
+      toast.error("Cannot register now, try again later")
+    } else {
+      toast.success("Schedule the worksheet successfully.")
+    }
+
+    //Wrap up, re-fetch the data
+    setIsModalScheduleActive(false)
+    setSelectedUserIds([])
+    setSelectedTimesheet(undefined)
+
+    fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), Math.ceil(moment(curEndDate, "yyyy-MM-DD").diff(moment(new Date()), "d")) + 1)
+    fetchScheduledTimesheet(moment(new Date()).format("yyyy-MM-DD"), null)
   }
 
   const onDeleteClick = (id) => {
@@ -312,21 +178,31 @@ export default function Index(props) {
 
   const onDeleteConfirm = async () => {
     setIsModalDeleteActive(false)
-    const payload = [deleteId]
-    const { error } = await TimesheetRegisterService.deleteRange(payload)
+    const { error } = await TimesheetSchedulerService.delete(deleteId)
     if (error) {
       toast.error("Delete fail")
     }
 
     toast.success("Delete request successfully")
     fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), Math.ceil(moment(curEndDate, "yyyy-MM-DD").diff(moment(new Date()), "d")) + 1)
-    //fetchRequestedTimesheet()
+    fetchScheduledTimesheet(moment(new Date()).format("yyyy-MM-DD"), null)
   }
 
   const getListOfNameRegistered = (timesheetCell) => {
-    let stringRepresented = ""
+    let stringRepresented = `Users register this timesheet ${timesheetCell.registerData.length > 1 ? 'are' : 'is'}: `
     for (let i = 0; i < timesheetCell.registerData.length; i++) {
       const data = timesheetCell.registerData[i].userName
+      stringRepresented += data
+      if (i != timesheetCell.registerData.length - 1) {
+        stringRepresented += ", "
+      }
+    }
+    return stringRepresented
+  }
+  const getListOfNameScheduled = (timesheetCell) => {
+    let stringRepresented = "The timesheet is schedule for: "
+    for (let i = 0; i < timesheetCell.scheduleData.length; i++) {
+      const data = timesheetCell.scheduleData[i].userName
       stringRepresented += data
       if (i != timesheetCell.registerData.length - 1) {
         stringRepresented += ", "
@@ -340,7 +216,7 @@ export default function Index(props) {
       <div>
         {/* Schedule Section */}
         <div className="font-bold text-xl pb-4 text-gray-800">Schedule this timesheet for: </div>
-        <MultiSelect labelText="Users" options={users} />
+        <MultiSelect labelText="Users" options={users} selectedIds={selectedUserIds} setSelectedIds={setSelectedUserIds}/>
         {/* -- Schedule Section -- */}
         {/* Information Section */}
         <div className="flex mt-3 items-center justify-between hover:cursor-pointer" onClick={() => setIsModalTabOpen(!isModalTabOpen)}>
@@ -413,17 +289,23 @@ export default function Index(props) {
             <li className="w-full flex space-x-5 border-b py-2 px-5">
               <div className="w-[10%] font-medium flex-none">Avatar</div>
               <div className="w-[50%] font-medium flex-none">Name</div>
-              <div className="font-medium flex-none">Request Time</div>
+              <div className="w-[20%] font-medium flex-none">Request Time</div>
+              <div className="font-medium flex-none">Action</div>
             </li>
             {
               selectedTimesheet?.registerData && selectedTimesheet.registerData.map(data => (
                 <li
-                  key={data.registerId}
-                  className="min-w-full flex space-x-5 w-max border-b rounded py-2 px-5 transition-all"
+                  key={data.id}
+                  className="min-w-full flex space-x-5 w-max border-b rounded py-1 px-5 transition-all"
                 >
-                  <div className="w-[10%] flex-none truncate"><Avatar alt="avt" src={data.avatar} /></div>
+                  <div className="w-[10%] flex items-center truncate"><Avatar alt="avt" src={data.avatar} /></div>
                   <div className="w-[50%] flex items-center truncate">{data.userName}</div>
-                  <div className="flex items-center truncate">{moment(data.requestAt).format("DD/MM/yyyy hh:mm:ss")}</div>
+                  <div className="w-[20%] flex items-center truncate">{moment(data.requestAt).format("DD/MM/yyyy hh:mm:ss")}</div>
+                  <div className="w-[20%] flex items-center justify-center truncate p-1">
+                    <IconButton disableFocusRipple={true} disableRipple={true} onClick={() => onAssignClick(data.userId)}>
+                      <MdPersonAdd className="w-8 h-8 text-green-600" />
+                    </IconButton>
+                  </div>
                 </li>
               ))
             }
@@ -438,7 +320,7 @@ export default function Index(props) {
     <div>
       {/* Delete Modal */}
       <ModalComponent
-        bodyTemplate={(<div>Do you want to delete this request?</div>)}
+        bodyTemplate={(<div>Do you want to delete this schedule?</div>)}
         headerName="Delete confirm"
         buttonsTemplate={(
           <div className="flex items-center justify-end w-full">
@@ -499,21 +381,35 @@ export default function Index(props) {
                     {salaryTimesheet.timesheetData.map(timesheetCell => (
                       <div
                         key={`${timesheetCell.timesheetId}${salaryTimesheet.date}`}
-                        className={`bg-gray-100 hover:bg-blue-200 hover:cursor-pointer w-12 h-8 flex items-center relative justify-center font-sm font-semibold text-center grow`}
+                        className={`${timesheetCell.isScheduled ? 'bg-green-300 hover:bg-green-500' : 'bg-gray-100 hover:bg-blue-200'} hover:cursor-pointer w-12 h-8 flex items-center relative justify-center font-sm font-semibold text-center grow`}
                         onClick={() => { onCellClick(salaryTimesheet, timesheetCell) }}
                       >
                         {<AvatarGroup max={5}>
-                          {timesheetCell.registerData?.map(d => <Avatar key={d.registerId} alt="avt" src={d.avatar} sx={{ width: 20, height: 20 }} />)}
+                          {
+                            timesheetCell.scheduleData && timesheetCell.scheduleData.length > 0 ?
+                            timesheetCell.scheduleData?.map(d => <Avatar key={d.id} alt="avt" src={d.avatar} sx={{ width: 20, height: 20 }} />) :
+                            timesheetCell.registerData?.map(d => <Avatar key={d.id} alt="avt" src={d.avatar} sx={{ width: 20, height: 20 }} />)
+                          }
                         </AvatarGroup>}
-                        {timesheetCell.isPicked === true ?
-                          (<Tooltip title={getListOfNameRegistered(timesheetCell)} placement="top" arrow>
+                        {
+                          timesheetCell.isScheduled === true ?
+                          (<Tooltip title={getListOfNameScheduled(timesheetCell)} placement="top" arrow>
                             <div className="absolute right-1">
                               <IconButton disableFocusRipple={true} disableRipple={true}>
-                                <MdFlag className="h-4 w-4 text-blue-700 " />
+                                <MdOutlineAddTask className="h-4 w-4 text-green-700 " />
                               </IconButton>
                             </div>
+                          </Tooltip>) :
+                          timesheetCell.isPicked === true ?
+                            (<Tooltip title={getListOfNameRegistered(timesheetCell)} placement="top" arrow>
+                              <div className="absolute right-1">
+                                <IconButton disableFocusRipple={true} disableRipple={true}>
+                                  <MdFlag className="h-4 w-4 text-blue-700 " />
+                                </IconButton>
+                              </div>
 
-                          </Tooltip>) : ''}
+                            </Tooltip>) : ''
+                        }
                       </div>
                     ))}
                   </div>
@@ -526,7 +422,7 @@ export default function Index(props) {
 
           {/* Button div */}
           <div className="w-full flex items-center mt-2 gap-3">
-            <SelectBox options={roles} selected={curRole} setSelected={setCurRole} width={20}/>
+            <SelectBox options={roles} selected={curRole} setSelected={setCurRole} width={20} onOptionClick={() => {}}/>
             <Button type={buttonTypes.DEFAULT} onClick={() => { loadMore7Days() }}>Load more 7 days</Button>
           </div>
           {/* --Button div-- */}
@@ -538,7 +434,14 @@ export default function Index(props) {
       <main className="border rounded shadow bg-white p-2 mt-1">
         {/* Header */}
         <div className="flex items-center justify-between hover:cursor-pointer" onClick={() => setIsTableTabOpen(!isTableTabOpen)}>
-          <div className="font-bold text-2xl p-2 text-gray-800">Your requested timesheets</div>
+          <div className="font-bold text-2xl p-2 text-gray-800 flex items-center">
+          <p className="">Timesheets scheduled for</p>
+            {/* Button div */}
+          <div className="flex items-center mt-2 ml-3 gap-3">
+            <SelectBox options={roles} selected={curRole} setSelected={setCurRole} width={20} onOptionClick={() => {}}/>
+          </div>
+          {/* --Button div-- */}
+          </div>
           <div>
             {
               isTableTabOpen ? <MdKeyboardArrowDown className="h-12 w-12" /> : <MdKeyboardArrowRight className="h-12 w-12" />
@@ -546,6 +449,8 @@ export default function Index(props) {
           </div>
         </div>
         {/* -- Header -- */}
+
+        
 
         {/* Table */}
         <div className={`transition-all duration-500 ${isTableTabOpen ? 'h-[30rem] opacity-1 p-2' : 'h-0 opacity-0 overflow-hidden'}`}>
@@ -559,24 +464,24 @@ export default function Index(props) {
                     <div className="w-[20%] font-medium flex-none">Timesheet Name</div>
                     <div className="w-[10%] font-medium flex-none">Time</div>
                     <div className="w-[15%] font-medium flex-none">Date (dd/MM/yyyy)</div>
+                    <div className="w-[20%] font-medium flex-none">Schedule for users</div>
                     <div className="w-[10%] font-medium flex-none">Salary</div>
-                    <div className="w-[10%] font-medium flex-none">Note</div>
-                    <div className="w-[15%] font-medium flex-none">Created At</div>
+                    <div className="w-[10%] font-medium flex-none">Created At</div>
                   </li>
                   {
-                    requestedTimesheets.map(request => (
+                    curRole && scheduledTimesheets.find(d => d.roleId == curRole.id)?.registrations.map(schedule => (
                       <li
-                        key={request.id}
+                        key={schedule.id}
                         className="min-w-full flex space-x-5 w-max border-b rounded py-2 px-5 transition-all"
                       >
-                        <div className="w-[20%] flex-none truncate">{request.timeSheet.name}</div>
-                        <div className="w-[10%] flex-none truncate">{request.timeSheet.timeRange}</div>
-                        <div className="w-[15%] flex-none truncate">{moment(request.date).format("DD/MM/yyyy")}</div>
-                        <div className="w-[10%] flex-none truncate">{request.salary}</div>
-                        <div className="w-[10%] flex-none truncate">{request.note}</div>
-                        <div className="w-[15%] flex-none truncate">{moment(request.createdAt).format("DD/MM/yyyy hh:mm:ss")}</div>
+                        <div className="w-[20%] flex-none truncate">{schedule.timeSheet.name}</div>
+                        <div className="w-[10%] flex-none truncate">{schedule.timeSheet.timeRange}</div>
+                        <div className="w-[15%] flex-none truncate">{moment(schedule.date).format("DD/MM/yyyy")}</div>
+                        <div className="w-[20%] flex-none truncate">{schedule.user.fullname}</div>
+                        <div className="w-[10%] flex-none truncate">{schedule.salary}</div>
+                        <div className="w-[10%] flex-none truncate">{moment(schedule.createdAt).format("DD/MM/yyyy hh:mm:ss")}</div>
                         <div className="grow text-center">
-                          <button className="text-red-600 hover:text-red-700" onClick={() => onDeleteClick(request.id)}>
+                          <button className="text-red-600 hover:text-red-700" onClick={() => onDeleteClick(schedule.id)}>
                             <MdDelete className="w-5 h-5" />
                           </button>
                         </div>
