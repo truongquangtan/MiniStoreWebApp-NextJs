@@ -16,7 +16,8 @@ const url = {
     worksheet: {
         base: `${host}/timesheet`,
         getAll: `${host}/timesheet/all`,
-        getByRole: `${host}/timesheet/timesheet-with-salary`
+        getByRole: `${host}/timesheet/timesheet-with-salary`,
+        getForSchedule: `${host}/timesheet/timesheet-for-schedule`
     },
     timesheetRegister: {
         getRequestedTimesheets: `${host}/timesheet/register-reference`,

@@ -10,6 +10,9 @@ import TimesheetRegisterService from "@/services/timesheet-register.service";
 import Loading from "@/components/loading";
 import ModalComponent from "@/components/modal";
 
+// Bug: Sau send request -> load more -> pick chỗ load more không được
+// Not implemented: Admin
+
 export default function Index(props) {
   const [isRequestTabOpen, setIsRequestTabOpen] = useState(false)
   const [isTableTabOpen, setIsTableTabOpen] = useState(true)
@@ -30,7 +33,6 @@ export default function Index(props) {
       toast.error("Fail to get data")
       return
     }
-    setCurEndDate(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
     setTimesheets(data.timeSheets)
 
     // Append isSelected field to each data in inner list
@@ -134,6 +136,7 @@ export default function Index(props) {
 
   useEffect(() => {
     fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
+    setCurEndDate(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
     fetchRequestedTimesheet()
   }, [])
 

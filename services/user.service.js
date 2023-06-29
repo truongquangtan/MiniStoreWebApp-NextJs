@@ -9,6 +9,12 @@ class UserService {
             useMyAxios().get(serviceUrl)
         )
     }
+    static async getAllByRoleId(roleId) {
+        const serviceUrl = `${url.user.base}?roleId=${roleId}`
+        return await wrapperCallApi(
+            useMyAxios().get(serviceUrl)
+        )
+    }
 
     static async create(payload) {
         const serviceUrl = url.user.base

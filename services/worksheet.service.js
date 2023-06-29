@@ -17,6 +17,14 @@ class WorksheetService {
         )
     }
 
+    static async getForSchedule(startDate, dateAddInCount, roleId) {
+        const serviceUrl = `${url.worksheet.getForSchedule}?startDate=${startDate}&addIn=${dateAddInCount}&roleId=${roleId}`
+
+        return await wrapperCallApi(
+            useMyAxios().get(serviceUrl)
+        )
+    }
+
     static async create(payload) {
         const serviceUrl = url.worksheet.base
 
