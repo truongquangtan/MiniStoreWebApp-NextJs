@@ -41,6 +41,8 @@ export default function Index(props) {
   const [users, setUsers] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
 
+  const [isInAddProcess, setIsInAddProcess] = useState(true)
+
   useEffect(() => {
     fetchRoles()
     curRole?.id && fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
@@ -118,6 +120,12 @@ export default function Index(props) {
   }
 
   const onCellClick = (row, cell) => {
+    if(cell?.isScheduled === true){
+      setIsInAddProcess(false)
+    } else {
+      setIsInAddProcess(true)
+    }
+
     setIsModalScheduleActive(true)
     const cellData = { ...cell, date: row.date }
     setSelectedTimesheet(cellData)
@@ -155,12 +163,29 @@ export default function Index(props) {
     }
 
     //Call API
-    const {error} = await TimesheetSchedulerService.scheduler(payload)
-    if(error){
-      toast.error("Cannot register now, try again later")
+    if(isInAddProcess) {
+      const {error} = await TimesheetSchedulerService.scheduler(payload)
+      if(error){
+        toast.error("Cannot register now, try again later")
+      } else {
+        toast.success("Schedule the worksheet successfully.")
+      }
     } else {
-      toast.success("Schedule the worksheet successfully.")
+      console.log(selectedTimesheet)
+      const updatePayload = {
+        timesheetId: selectedTimesheet.timesheetId,
+        userIds: selectedUserIds,
+        salary: selectedTimesheet.salary,
+        date: selectedTimesheet.date,
+      }
+      const {error} = await TimesheetSchedulerService.updateScheduler(updatePayload)
+      if(error){
+        toast.error("Cannot update now, try again later")
+      } else {
+        toast.success("Update the worksheet successfully.")
+      }
     }
+    
 
     //Wrap up, re-fetch the data
     setIsModalScheduleActive(false)
@@ -344,7 +369,8 @@ export default function Index(props) {
         headerName="Schedule Modal"
         buttonsTemplate={(
           <div className="flex items-center justify-end w-full">
-            <Button type={buttonTypes.PRIMARY} onClick={() => onScheduleConfirm()}>Confirm</Button>
+            {isInAddProcess ? <Button type={buttonTypes.PRIMARY} onClick={() => onScheduleConfirm()}>Confirm</Button>
+                            : <Button type={buttonTypes.PRIMARY} onClick={() => onScheduleConfirm()}>Update</Button>}
             <Button type={buttonTypes.DEFAULT} onClick={() => setIsModalScheduleActive(false)}>Cancel</Button>
           </div>
         )}

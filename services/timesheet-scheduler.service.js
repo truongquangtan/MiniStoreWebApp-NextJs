@@ -27,6 +27,22 @@ class TimesheetSchedulerService {
         )
     }
 
+    static async updateScheduler(payload) {
+        const serviceUrl = url.timesheetScheduler.schedule
+
+        return await wrapperCallApi(
+            useMyAxios().put(
+                serviceUrl,
+                payload,
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            )
+        )
+    }
+
     // accept list of string id
     static async delete(scheduleId) {
         const serviceUrl = `${url.timesheetScheduler.schedule}/${scheduleId}`
