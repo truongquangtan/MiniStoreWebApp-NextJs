@@ -19,6 +19,21 @@ const url = {
     worksheet: {
         base: `${host}/timesheet`,
         getAll: `${host}/timesheet/all`,
+        getByRole: `${host}/timesheet/timesheet-with-salary`,
+        getForSchedule: `${host}/timesheet/timesheet-for-schedule`
+    },
+    timesheetRegister: {
+        getRequestedTimesheets: `${host}/timesheet/register-reference`,
+        register: `${host}/timesheet/register-reference`,
+        deleteRange: `${host}/timesheet/register-reference/delete-range`
+    },
+    timesheetScheduler: {
+        schedule: `${host}/timesheet/register`,
+        getAllScheduled: `${host}/timesheet/register/all`,
+    },
+    auth: {
+        login: `${host}/auth/login`,
+        logout: `${host}/auth/logout`,
     }
 }
 

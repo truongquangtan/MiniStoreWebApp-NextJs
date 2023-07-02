@@ -1,4 +1,4 @@
-export default function TextInput({type, name, id, placeholder, value, setValue, onChange, onBlur, ariaInvalid, ...props}) {
+export default function TextInput({type, name, id, placeholder, value, setValue, onChange, onBlur, ariaInvalid, readOnly, ...props}) {
     return (
         <input
             type={type || "text"}
@@ -10,6 +10,7 @@ export default function TextInput({type, name, id, placeholder, value, setValue,
             onChange={onChange}
             onBlur={onBlur}
             aria-invalid={ariaInvalid}
+            readOnly={readOnly}
         ></input>
     )
 }

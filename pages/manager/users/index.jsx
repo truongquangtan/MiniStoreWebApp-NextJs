@@ -14,24 +14,8 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 
-const CreateUser = ({ setFlag, refetch }) => {
-
-  const [roles, setRoles] = useState([])
+const CreateUser = ({ setFlag, roles, refetch }) => {
   const [avatarImage, setAvatarImage] = useState(undefined)
-
-
-  useEffect(() => {
-    (
-      async () => {
-        const { error, data } = await RoleService.getAllRoles()
-        if (error) {
-          return
-        }
-
-        setRoles(data)
-      }
-    )()
-  }, [])
 
   const formId = useId()
   const formik = useFormik(
@@ -340,9 +324,8 @@ const CreateUser = ({ setFlag, refetch }) => {
   )
 }
 
-const User = ({ user, refetch }) => {
+const User = ({ user, roles, refetch }) => {
   const [displayUpdate, setDisplayUpdate] = useBoolean(false)
-  const [roles, setRoles] = useState([])
   const [avatarImage, setAvatarImage] = useState()
 
 
@@ -353,19 +336,6 @@ const User = ({ user, refetch }) => {
     const year = date.getFullYear();
 
     return `${year}-${month}-${day}`;
-  }, [])
-
-  useEffect(() => {
-    (
-      async () => {
-        const { error, data } = await RoleService.getAllRoles()
-        if (error) {
-          return
-        }
-
-        setRoles(data)
-      }
-    )()
   }, [])
 
   const formId = useId()
@@ -714,11 +684,12 @@ export default function Index() {
   const [pageName, setPageName] = useContext(AppContext)
 
   const [users, setUsers] = useState([])
+  const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
   const [displayCreate, setDisplayCreate] = useBoolean(false)
 
 
-  const fetchUser = useCallback(async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true)
     const { error, data } = await UserService.getAll()
     if (!error) {
@@ -726,9 +697,16 @@ export default function Index() {
     }
     setLoading(false)
   }, [])
+  const fetchRoles = async () => {
+    const { error, data } = await RoleService.getAllRoles()
+    if (!error) {
+      setRoles(data)
+    }
+  }
 
   useEffect(() => {
-    fetchUser()
+    fetchRoles()
+    fetchUsers()
     setPageName("User Management")
   }, [])
 
@@ -760,7 +738,7 @@ export default function Index() {
                   <div className="grow font-medium">Address</div>
                 </li>
                 {
-                  users.map(user => <User key={user.id} user={user} refetch={fetchUser} />)
+                  users.map(user => <User key={user.id} user={user} roles={roles} refetch={fetchUsers} />)
                 }
               </ul>
             </div>
@@ -769,7 +747,7 @@ export default function Index() {
       </div>
       {
         displayCreate ? (
-          <CreateUser setFlag={setDisplayCreate} refetch={fetchUser} />
+          <CreateUser setFlag={setDisplayCreate} roles={roles} refetch={fetchUsers} />
         ) : null
       }
     </>

@@ -1,14 +1,13 @@
 import { buttonTypes } from "@/common/type"
 import { Dialog } from "@headlessui/react"
-import { useState } from "react"
 import Button from "../button"
 import Card from "../card"
 import FormErrorText from "../form/error_text"
-export default function Modal({ isOpen, onConfirm, confirmText, onClose, width, headerName, bodyTemplate, buttonsTemplate, error }) {
+export default function Modal({ isOpen, onConfirm, confirmText, onClose, width, headerName, bodyTemplate, buttonsTemplate, absoluteTop, error }) {
   return (
     <Dialog className={`relative !z-1000`} open={isOpen} onClose={() => onClose()}>
       <div className="fixed inset-0 bg-[#000000] bg-opacity-50" aria-hidden="true" />
-      <div className="fixed left-0 right-0 top-20 flex items-center justify-center p-4">
+      <div className={`fixed left-0 right-0 ${absoluteTop || 'top-20'} flex items-center justify-center p-4`}>
         <Card extra={`${width}`}>
           <Dialog.Panel>
             {/* Header */}

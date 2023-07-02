@@ -41,3 +41,11 @@ body {
 *::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.Mui-selected {
+  background-color: cornflowerblue !important;
+}
+
+.Mui-selected:hover {
+  background-color: rgb(234, 66, 66) !important;
+}

@@ -1,10 +1,10 @@
-import myAxios, { wrapperCallApi } from "@/common/myAxios"
+import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 class ProductService {
     static async getAll() {
         return await wrapperCallApi(
-            myAxios.get(url.product.base)
+            useMyAxios().get(url.product.base)
         )
     }
 
@@ -13,7 +13,7 @@ class ProductService {
         const serviceUrl = url.product.base
 
         return await wrapperCallApi(
-            myAxios.post(
+            useMyAxios().post(
                 serviceUrl,
                 payload,
                 {
@@ -29,7 +29,7 @@ class ProductService {
         const serviceUrl = `${url.product.base}/${id}`
 
         return await wrapperCallApi(
-            myAxios.put(
+            useMyAxios().put(
                 serviceUrl,
                 payload,
                 {
@@ -44,7 +44,7 @@ class ProductService {
         const serviceUrl = `${url.product.base}/${id}`
 
         return await wrapperCallApi(
-            myAxios.delete(serviceUrl)
+            useMyAxios().delete(serviceUrl)
         )
     }
 }

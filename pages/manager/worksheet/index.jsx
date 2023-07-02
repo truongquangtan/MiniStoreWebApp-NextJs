@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import Button from "@/components/button";
 import { buttonTypes } from "@/common/type";
 import constants from "@/common/constants";
+import moment from "moment/moment";
 
 export default function Index(props) {
   const [pageName, setPageName] = useContext(AppContext)

@@ -1,10 +1,10 @@
-import myAxios, { wrapperCallApi } from "@/common/myAxios"
+import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 class CategoryService {
     static async getAll() {
         return await wrapperCallApi(
-            myAxios.get(url.category.base)
+            useMyAxios().get(url.category.base)
         )
     }
 }
