@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
+import { getAvatar, getName, getRole, removeAllData } from "@/common/authStore";
+import constants from "@/common/constants";
 import Dropdown from "components/dropdown";
-import { FiAlignJustify } from "react-icons/fi";
+import { useRouter } from "next/router";
 import { BsArrowBarUp } from "react-icons/bs";
-import { RiMoonFill, RiSunFill } from "react-icons/ri";
+import { FiAlignJustify } from "react-icons/fi";
 import {
   IoMdNotificationsOutline,
 } from "react-icons/io";
-import { getAvatar, getName, getRole, removeAllData } from "@/common/authStore";
-import constants from "@/common/constants";
-import { useRouter } from "next/router";
 
 const Breadcrumb = (props) => {
   const router = useRouter()
@@ -28,13 +27,13 @@ const Breadcrumb = (props) => {
     setName(lastName[lastName.length - 1])
 
     const role = getRole()
-    if(role == constants.roleIdConstant.MANAGER){
+    if (role == constants.roleIdConstant.MANAGER) {
       setRole('Manager')
     }
-    if(role == constants.roleIdConstant.SALES){
+    if (role == constants.roleIdConstant.SALES) {
       setRole('Sales')
     }
-    if(role == constants.roleIdConstant.GUARD){
+    if (role == constants.roleIdConstant.GUARD) {
       setRole('Guard')
     }
   }, [])
@@ -45,7 +44,7 @@ const Breadcrumb = (props) => {
   }
 
   return (
-    <nav className="my-4 z-40 relative flex flex-row flex-wrap items-center justify-between rounded-xl backdrop-blur-xl dark:bg-[#0b14374d]">
+    <nav className="my-4 z-auto relative flex flex-row flex-wrap items-center justify-between rounded-xl backdrop-blur-xl dark:bg-[#0b14374d]">
       <div>
         <div className="h-6 w-[224px] pt-1">
           <a

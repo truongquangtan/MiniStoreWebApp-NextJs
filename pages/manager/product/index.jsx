@@ -4,6 +4,7 @@ import { AppContext } from "@/context/app-context";
 import useBoolean from "@/hooks/useBoolean";
 import CategoryService from "@/services/category.service";
 import ProductService from "@/services/product.service";
+import { formatCurrencyVND } from "@/utils/currency";
 import { base64Image } from "@/utils/file";
 import { REGEX } from "@/validations/regex";
 import { useFormik } from "formik";
@@ -406,11 +407,9 @@ const Product = ({ product, categories, refetch }) => {
                     <p>{product.name}</p>
                 </div>
                 <div className="w-56 flex-none">{product.category.name}</div>
-                <div className="w-56 flex-none">{product.price}</div>
+                <div className="w-56 flex-none">{formatCurrencyVND(product.price)}</div>
                 <div className="w-20 flex-none">{product.quantity}</div>
                 <div className="grow">{product.description}</div>
-
-
             </li>
             {
                 displayUpdate ? (
