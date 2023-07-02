@@ -10,6 +10,9 @@ const url = {
     product: {
         base: `${host}/products`,
     },
+    order: {
+        base: `${host}/orders`,
+    },
     category: {
         base: `${host}/categories`,
     },
