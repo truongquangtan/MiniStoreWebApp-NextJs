@@ -10,7 +10,8 @@ import {
   MdSell,
   MdPermIdentity,
   MdAddCard,
-  MdCalendarMonth
+  MdCalendarMonth,
+  MdPerson
 } from "react-icons/md";
 
 const routes = {
@@ -94,6 +95,13 @@ const routes = {
       icon: <MdShoppingCart className="h-6 w-6" />,
       isActive: false,
     },
+    {
+      name: "Profile",
+      layout: "/guard",
+      path: "profile",
+      icon: <MdPerson className="h-6 w-6" />,
+      isActive: false,
+    }
   ],
   guard: [
     {
@@ -108,6 +116,13 @@ const routes = {
       layout: "/guard",
       path: "worksheet-register",
       icon: <MdAddCard className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
+      name: "Profile",
+      layout: "/guard",
+      path: "profile",
+      icon: <MdPerson className="h-6 w-6" />,
       isActive: false,
     }
   ]

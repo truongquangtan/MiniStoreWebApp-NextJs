@@ -171,7 +171,6 @@ export default function Index(props) {
         toast.success("Schedule the worksheet successfully.")
       }
     } else {
-      console.log(selectedTimesheet)
       const updatePayload = {
         timesheetId: selectedTimesheet.timesheetId,
         userIds: selectedUserIds,
