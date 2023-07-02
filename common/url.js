@@ -2,7 +2,8 @@ const host = process.env.NEXT_PUBLIC_API_HOST
 
 const url = {
     user: {
-        base: `${host}/users`
+        base: `${host}/users`,
+        info: `${host}/users/info`
     },
     role: {
         base: `${host}/roles`

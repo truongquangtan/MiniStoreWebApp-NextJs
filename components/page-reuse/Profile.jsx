@@ -1,21 +1,46 @@
 import { REGEX } from "@/validations/regex"
 import { useFormik } from "formik"
-import { useId } from "react"
+import { useEffect, useId, useState } from "react"
 import * as Yup from "yup"
 import Label from "../form/label"
 import TextInput from "../form/text_input"
 import FormErrorText from "../form/error_text"
+import UserService from "@/services/user.service"
+import { toast } from "react-toastify"
+import moment from "moment"
 
 export default function Profile(props) {
+  const [user, setUser] = useState(undefined)
+
+  const fetchUser = async () => {
+    const { error, data } = await UserService.getInfo();
+    if (error) {
+      toast.error("Cannot fetch data")
+    }
+
+    setUser(data)
+  }
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  return (
+    user && <FormProfile userData={user} refetch={fetchUser} />
+  )
+}
+
+const FormProfile = ({ userData, refetch }) => {
+
   const formId = useId()
 
   const formik = useFormik(
     {
       initialValues: {
-        fullName: '',
-        phone: '',
-        address: '',
-        dob: '',
+        fullName: userData?.fullname,
+        phone: userData?.phone,
+        address: userData?.address,
+        dob: moment(userData?.dob).format("yyyy-MM-DD"),
       },
       validationSchema: Yup.object().shape(
         {
@@ -26,24 +51,39 @@ export default function Profile(props) {
         }
       ),
       onSubmit: async ({ fullName, phone, address, dob }) => {
-        //submit here
+        const payload = {
+          fullname: fullName,
+          phone: phone,
+          address: address,
+          dob: dob,
+          roleId: userData.roleId
+        }
+
+        const {error} = await UserService.update(userData.id, payload)
+        if(error){
+          toast.error("Cannot update user information")
+          return
+        }
+
+        toast.success("Update information successfully")
+        refetch()
       }
     }
   )
 
 
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched, isValid, isSubmitting, setFieldValue } = formik
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched, isValid, isSubmitting } = formik
 
   const { fullName, phone, address, dob } = values
 
 
   return (
-    <main className="border rounded shadow bg-white p-2 h-96">
+    <main className="border rounded shadow bg-white p-2">
       <form
         id={formId}
         onSubmit={handleSubmit}
-        className="grow overflow-y-auto p-5 space-y-5 text-gray-800"
+        className="grow overflow-y-auto p-2 space-y-5 text-gray-800"
       >
         <div className="flex overflow-hidden space-x-5">
           <div className="grow space-y-5">
@@ -86,39 +126,48 @@ export default function Profile(props) {
           </div>
         </div>
         <div className="space-y-1">
-          <label className="text-gray-700">Address</label>
-          <input
+          <Label forField="address">Address</Label>
+          <TextInput
+            id="address"
             value={address}
             name="address"
             onChange={handleChange}
             onBlur={handleBlur}
             aria-invalid={Boolean(errors.address && touched.address)}
-            placeholder="Enter address..."
-            className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-
+            placeholder="Enter address"
           />
           {
             errors.address && touched.address ? (
-              <p className="font-medium text-xs text-red-500">{errors.address}</p>
+              <FormErrorText>{errors.address}</FormErrorText>
             ) : null
           }
         </div>
         <div className="space-y-1">
-          <label className="text-gray-700">Phone</label>
-          <input
+          <Label forField="phone">Phone</Label>
+          <TextInput
+            id="phone"
             value={phone}
             name="phone"
             onChange={handleChange}
             onBlur={handleBlur}
             aria-invalid={Boolean(errors.phone && touched.phone)}
-            placeholder="Enter phone..."
-            className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+            placeholder="Enter phone"
           />
           {
             errors.phone && touched.phone ? (
-              <p className="font-medium text-xs text-red-500">{errors.phone}</p>
+              <FormErrorText>{errors.phone}</FormErrorText>
             ) : null
           }
+        </div>
+        <div className="flex w-full justify-end px-5 space-x-2">
+          <button
+            type="submit"
+            form={formId}
+            disabled={Boolean(!isValid || isSubmitting)}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Update
+          </button>
         </div>
       </form>
     </main>

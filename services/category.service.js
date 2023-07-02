@@ -1,4 +1,4 @@
-import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
+import { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 class CategoryService {

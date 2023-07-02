@@ -1,4 +1,4 @@
-import myAxios, { wrapperCallApi, useMyAxios } from "@/common/myAxios"
+import { wrapperCallApi, useMyAxios } from "@/common/myAxios"
 import url from "@/common/url"
 
 
@@ -11,6 +11,12 @@ class UserService {
     }
     static async getAllByRoleId(roleId) {
         const serviceUrl = `${url.user.base}?roleId=${roleId}`
+        return await wrapperCallApi(
+            useMyAxios().get(serviceUrl)
+        )
+    }
+    static async getInfo() {
+        const serviceUrl = url.user.info
         return await wrapperCallApi(
             useMyAxios().get(serviceUrl)
         )
