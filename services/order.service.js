@@ -1,4 +1,4 @@
-import myAxios, { wrapperCallApi } from "@/common/myAxios"
+import { useMyAxios, wrapperCallApi } from "@/common/myAxios"
 import url from "@/common/url"
 
 
@@ -6,7 +6,7 @@ class OrderService {
     static async getAll() {
         const serviceUrl = url.order.base
         return await wrapperCallApi(
-            myAxios.get(serviceUrl)
+            useMyAxios().get(serviceUrl)
         )
     }
 
@@ -14,17 +14,25 @@ class OrderService {
         const serviceUrl = url.order.base
 
         return await wrapperCallApi(
-            myAxios.post(
+            useMyAxios().post(
                 serviceUrl,
                 payload
             )
         )
     }
 
+    static async delete(id) {
+        const serviceUrl = `${url.order.base}/${id}`
+
+        return await wrapperCallApi(
+            useMyAxios().delete(serviceUrl)
+        )
+    }
+
     static async update(id, payload) {
         const serviceUrl = `${url.user.base}/${id}`
         return await wrapperCallApi(
-            myAxios.put(
+            useMyAxios().put(
                 serviceUrl,
                 payload,
                 {
