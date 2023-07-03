@@ -1,5 +1,5 @@
 import Loading from "@/components/loading";
-import Modal from "@/components/modal/Modal";
+import Modal from "@/components/modal";
 import { AppContext } from "@/context/app-context";
 import useBoolean from "@/hooks/useBoolean";
 import RoleService from "@/services/role.service";
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 
-const CreateUser = ({ setFlag, roles, refetch }) => {
+const CreateUser = ({ flag, setFlag, roles, refetch }) => {
   const [avatarImage, setAvatarImage] = useState(undefined)
 
   const formId = useId()
@@ -67,7 +67,7 @@ const CreateUser = ({ setFlag, roles, refetch }) => {
 
         if (status === 200) {
           toast.success("Create account successfully!")
-          setFlag.off()
+          setFlag(false)
           refetch()
           return
         }
@@ -94,20 +94,11 @@ const CreateUser = ({ setFlag, roles, refetch }) => {
   }, [avatar])
 
   return (
-    <Modal setFlag={setFlag}>
-      <div className="h-full w-md flex flex-col overflow-y-auto bg-white rounded shadow border space-y-5">
-        <div className="flex justify-between shadow p-5">
-          <h2 className="text-indigo-500 font-medium text-lg">Create user</h2>
-          <button
-            onClick={setFlag.off}
-            className="text-gray-400 h-6 w-6 p-0.5 rounded-full hover:text-white hover:bg-red-500 transition-colors duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-full h-full">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-        </div>
+    <Modal
+      isOpen={flag}
+      onClose={() => setFlag(false)}
+      headerName="Create user"
+      bodyTemplate={(
         <form
           id={formId}
           onSubmit={handleSubmit}
@@ -301,6 +292,8 @@ const CreateUser = ({ setFlag, roles, refetch }) => {
           </div>
 
         </form>
+      )}
+      buttonsTemplate={(
         <div className="flex justify-end px-5 py-2 space-x-5 border-t">
           <button
             type="submit"
@@ -312,20 +305,20 @@ const CreateUser = ({ setFlag, roles, refetch }) => {
           </button>
           <button
             className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
-            onClick={setFlag.off}
+            onClick={() => setFlag(false)}
             type="button"
           >
             Cancel
           </button>
         </div>
-      </div>
-
+      )}
+    >
     </Modal>
   )
 }
 
 const User = ({ user, roles, refetch }) => {
-  const [displayUpdate, setDisplayUpdate] = useBoolean(false)
+  const [displayUpdate, setDisplayUpdate] = useState(false)
   const [avatarImage, setAvatarImage] = useState()
 
 
@@ -389,7 +382,7 @@ const User = ({ user, roles, refetch }) => {
         if (status === 200) {
           toast.success("Update account successfully!")
           refetch()
-          setDisplayUpdate.off()
+          setDisplayUpdate(false)
           return
         }
         toast.error("Update account failed!")
@@ -424,7 +417,7 @@ const User = ({ user, roles, refetch }) => {
     <div>
       <li
         className="min-w-full flex space-x-5 w-max border-b rounded py-2 px-5 cursor-pointer hover:bg-gray-300 transition-all"
-        onClick={setDisplayUpdate.on}
+        onClick={() => setDisplayUpdate(true)}
       >
         <div className="w-56 flex-none flex space-x-3 overflow-x-hidden">
           <img className="block w-10 h-10 object-cover rounded-full" src={user.avatar} />
@@ -447,235 +440,225 @@ const User = ({ user, roles, refetch }) => {
         <div className="w-20 flex-none truncate">{user.role.name}</div>
         <div className="grow">{user.address}</div>
       </li>
-      {
-        displayUpdate ? (
-          <Modal setFlag={setDisplayUpdate}>
-            <div className="h-full w-md flex flex-col overflow-y-auto bg-white rounded shadow border space-y-5">
-              <div className="flex justify-between shadow p-5">
-                <h2 className="text-indigo-500 font-medium text-lg">User</h2>
-                <button
-                  onClick={setDisplayUpdate.off}
-                  className="text-gray-400 h-6 w-6 p-0.5 rounded-full hover:text-white hover:bg-red-500 transition-colors duration-200"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-full h-full">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+      <Modal
+        isOpen={displayUpdate}
+        onClose={() => setDisplayUpdate(false)}
+        headerName="User"
+        bodyTemplate={(
+          <form
+            id={formId}
+            onSubmit={handleSubmit}
+            className="grow overflow-y-auto p-5 space-y-5 text-gray-800"
+          >
+            <div className="flex overflow-hidden space-x-5">
+              <div className="grow space-y-5">
+                <div className="space-y-1">
+                  <label className="text-gray-700">Full Name</label>
+                  <input
+                    value={fullName}
+                    name="fullName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={Boolean(errors.fullName && touched.fullName)}
+                    placeholder="Enter fullName..."
+                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+                  />
+                  {
+                    errors.fullName && touched.fullName ? (
+                      <p className="font-medium text-xs text-red-500">{errors.fullName}</p>
+                    ) : null
+                  }
+                </div>
+                <div className="space-y-1">
+                  <label className="text-gray-700">Birth Day</label>
+                  <input
+                    value={dob}
+                    name="dob"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={Boolean(errors.dob && touched.dob)}
+                    type="date"
+                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+
+                  />
+                  {
+                    errors.dob && touched.dob ? (
+                      <p className="font-medium text-xs text-red-500">{errors.dob}</p>
+                    ) : null
+                  }
+                </div>
+
+
               </div>
-              <form
-                id={formId}
-                onSubmit={handleSubmit}
-                className="grow overflow-y-auto p-5 space-y-5 text-gray-800"
+
+              <label className="space-y-1 pointer-events-none">
+
+                <p className="text-gray-700 text-center">Avatar</p>
+
+                <div className="h-36 w-36 rounded border overflow-hidden cursor-pointer">
+                  <input
+                    value={''}
+                    name="avatar"
+                    type="file"
+
+                    className="hidden"
+                    onChange={e => setFieldValue("avatar", e.target.files[0])}
+                    onBlur={handleBlur}
+                  />
+                  {
+                    errors.avatar && touched.avatar ? (
+                      <p className="text-center py-2 font-medium text-xs text-red-500">{errors.avatar}</p>
+                    ) : null
+                  }
+                  {
+                    avatarImage ? (
+                      <img className="block h-full w-full object-cover" src={avatarImage} />
+                    ) : null
+                  }
+                </div>
+              </label>
+            </div>
+            <div className="space-y-1">
+              <label className="text-gray-700">Role</label>
+              <div
+                aria-invalid={Boolean(errors.role && touched.role)}
+                className="relative rounded border-2 focus-within:border-blue-700 aria-invalid:focus-within:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
               >
-                <div className="flex overflow-hidden space-x-5">
-                  <div className="grow space-y-5">
-                    <div className="space-y-1">
-                      <label className="text-gray-700">Full Name</label>
-                      <input
-                        value={fullName}
-                        name="fullName"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        aria-invalid={Boolean(errors.fullName && touched.fullName)}
-                        placeholder="Enter fullName..."
-                        className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-                      />
-                      {
-                        errors.fullName && touched.fullName ? (
-                          <p className="font-medium text-xs text-red-500">{errors.fullName}</p>
-                        ) : null
-                      }
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-gray-700">Birth Day</label>
-                      <input
-                        value={dob}
-                        name="dob"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        aria-invalid={Boolean(errors.dob && touched.dob)}
-                        type="date"
-                        className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-
-                      />
-                      {
-                        errors.dob && touched.dob ? (
-                          <p className="font-medium text-xs text-red-500">{errors.dob}</p>
-                        ) : null
-                      }
-                    </div>
-
-
-                  </div>
-
-                  <label className="space-y-1 pointer-events-none">
-
-                    <p className="text-gray-700 text-center">Avatar</p>
-
-                    <div className="h-36 w-36 rounded border overflow-hidden cursor-pointer">
-                      <input
-                        value={''}
-                        name="avatar"
-                        type="file"
-
-                        className="hidden"
-                        onChange={e => setFieldValue("avatar", e.target.files[0])}
-                        onBlur={handleBlur}
-                      />
-                      {
-                        errors.avatar && touched.avatar ? (
-                          <p className="text-center py-2 font-medium text-xs text-red-500">{errors.avatar}</p>
-                        ) : null
-                      }
-                      {
-                        avatarImage ? (
-                          <img className="block h-full w-full object-cover" src={avatarImage} />
-                        ) : null
-                      }
-                    </div>
-                  </label>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-gray-700">Role</label>
-                  <div
-                    aria-invalid={Boolean(errors.role && touched.role)}
-                    className="relative rounded border-2 focus-within:border-blue-700 aria-invalid:focus-within:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-                  >
-                    <button
-                      type="button"
-                      className="peer outline-none w-full px-3 py-1.5"
-                    >
-                      {
-                        role ? (
-                          <div className="flex">
-                            <span className="flex-none w-fit font-medium text-indigo-700">#{role.id}</span>
-                            <span className="px-2 grow text-left">{role.name}</span>
-                          </div>
-                        ) : (
-                          <p>Select Role</p>
-                        )
-                      }
-                    </button>
-                    <ul className="invisible peer-focus:visible absolute mt-2 border shadow w-full bg-white transition-all duration-300">
-                      {
-                        roles.map(
-                          role => (
-                            <li
-                              key={role.id}
-                              onClick={() => setFieldValue("role", role, true)}
-                              className="flex border-t py-1 hover:bg-zinc-200 cursor-pointer"
-                            >
-                              <span className="px-2 flex-none w-10 font-medium text-indigo-700">#{role.id}</span>
-                              <span className="px-2 flex-none w-80">{role.name}</span>
-                            </li>
-                          )
-                        )
-                      }
-                    </ul>
-
-                  </div>
-                  {
-                    errors.role && touched.role ? (
-                      <p className="font-medium text-xs text-red-500">{errors.role}</p>
-                    ) : null
-                  }
-                </div>
-                <div className="space-y-1">
-                  <label className="text-gray-700">Address</label>
-                  <input
-                    value={address}
-                    name="address"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-invalid={Boolean(errors.address && touched.address)}
-                    placeholder="Enter address..."
-                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-
-                  />
-                  {
-                    errors.address && touched.address ? (
-                      <p className="font-medium text-xs text-red-500">{errors.address}</p>
-                    ) : null
-                  }
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-gray-700">Email</label>
-                  <input
-                    value={email}
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-invalid={Boolean(errors.email && touched.email)}
-                    placeholder="Enter email..."
-                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-
-                  />
-                  {
-                    errors.email && touched.email ? (
-                      <p className="font-medium text-xs text-red-500">{errors.email}</p>
-                    ) : null
-                  }
-                </div>
-                <div className="space-y-1">
-                  <label className="text-gray-700">Phone</label>
-                  <input
-                    value={phone}
-                    name="phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-invalid={Boolean(errors.phone && touched.phone)}
-                    placeholder="Enter phone..."
-                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-                  />
-                  {
-                    errors.phone && touched.phone ? (
-                      <p className="font-medium text-xs text-red-500">{errors.phone}</p>
-                    ) : null
-                  }
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-gray-700">Password</label>
-                  <input
-                    value={password}
-                    name="password"
-                    type="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-invalid={Boolean(errors.password && touched.password)}
-                    placeholder="Enter password..."
-                    className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
-                  />
-                  {
-                    errors.password && touched.password ? (
-                      <p className="font-medium text-xs text-red-500">{errors.password}</p>
-                    ) : null
-                  }
-                </div>
-              </form>
-              <div className="flex justify-end px-5 py-2 space-x-5 border-t">
                 <button
-                  type="submit"
-                  form={formId}
-                  disabled={Boolean(!isValid || isSubmitting)}
-                  className="px-5 py-1 bg-indigo-500 disabled:opacity-50 text-white rounded hover:opacity-95 transition-opacity"
-                >
-                  Save
-                </button>
-                <button
-                  className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
-                  onClick={setDisplayUpdate.off}
                   type="button"
+                  className="peer outline-none w-full px-3 py-1.5"
                 >
-                  Cancel
+                  {
+                    role ? (
+                      <div className="flex">
+                        <span className="flex-none w-fit font-medium text-indigo-700">#{role.id}</span>
+                        <span className="px-2 grow text-left">{role.name}</span>
+                      </div>
+                    ) : (
+                      <p>Select Role</p>
+                    )
+                  }
                 </button>
+                <ul className="invisible peer-focus:visible absolute mt-2 border shadow w-full bg-white transition-all duration-300">
+                  {
+                    roles.map(
+                      role => (
+                        <li
+                          key={role.id}
+                          onClick={() => setFieldValue("role", role, true)}
+                          className="flex border-t py-1 hover:bg-zinc-200 cursor-pointer"
+                        >
+                          <span className="px-2 flex-none w-10 font-medium text-indigo-700">#{role.id}</span>
+                          <span className="px-2 flex-none w-80">{role.name}</span>
+                        </li>
+                      )
+                    )
+                  }
+                </ul>
+
               </div>
+              {
+                errors.role && touched.role ? (
+                  <p className="font-medium text-xs text-red-500">{errors.role}</p>
+                ) : null
+              }
+            </div>
+            <div className="space-y-1">
+              <label className="text-gray-700">Address</label>
+              <input
+                value={address}
+                name="address"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-invalid={Boolean(errors.address && touched.address)}
+                placeholder="Enter address..."
+                className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+
+              />
+              {
+                errors.address && touched.address ? (
+                  <p className="font-medium text-xs text-red-500">{errors.address}</p>
+                ) : null
+              }
             </div>
 
-          </Modal>
-        ) : null
-      }
+            <div className="space-y-1">
+              <label className="text-gray-700">Email</label>
+              <input
+                value={email}
+                name="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-invalid={Boolean(errors.email && touched.email)}
+                placeholder="Enter email..."
+                className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+
+              />
+              {
+                errors.email && touched.email ? (
+                  <p className="font-medium text-xs text-red-500">{errors.email}</p>
+                ) : null
+              }
+            </div>
+            <div className="space-y-1">
+              <label className="text-gray-700">Phone</label>
+              <input
+                value={phone}
+                name="phone"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-invalid={Boolean(errors.phone && touched.phone)}
+                placeholder="Enter phone..."
+                className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+              />
+              {
+                errors.phone && touched.phone ? (
+                  <p className="font-medium text-xs text-red-500">{errors.phone}</p>
+                ) : null
+              }
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-gray-700">Password</label>
+              <input
+                value={password}
+                name="password"
+                type="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-invalid={Boolean(errors.password && touched.password)}
+                placeholder="Enter password..."
+                className="outline-none w-full px-3 py-1.5 rounded border-2 focus:border-blue-700 aria-invalid:focus:border-blue-700 aria-invalid:border-red-500 transition-all duration-300"
+              />
+              {
+                errors.password && touched.password ? (
+                  <p className="font-medium text-xs text-red-500">{errors.password}</p>
+                ) : null
+              }
+            </div>
+          </form>
+        )}
+        buttonsTemplate={(
+          <div className="flex justify-end px-5 py-2 space-x-5 border-t">
+            <button
+              type="submit"
+              form={formId}
+              disabled={Boolean(!isValid || isSubmitting)}
+              className="px-5 py-1 bg-indigo-500 disabled:opacity-50 text-white rounded hover:opacity-95 transition-opacity"
+            >
+              Save
+            </button>
+            <button
+              className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
+              onClick={() => setDisplayUpdate(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      >
+      </Modal>
     </div>
   )
 }
@@ -686,7 +669,7 @@ export default function Index() {
   const [users, setUsers] = useState([])
   const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
-  const [displayCreate, setDisplayCreate] = useBoolean(false)
+  const [displayCreate, setDisplayCreate] = useState(false)
 
 
   const fetchUsers = useCallback(async () => {
@@ -719,7 +702,7 @@ export default function Index() {
       <div className="border rounded shadow bg-white p-2">
         <div className="p-5 flex items-center justify-between">
           <div className="font-bold text-xl text-gray-800">Users</div>
-          <button onClick={setDisplayCreate.toggle}>
+          <button onClick={() => setDisplayCreate(true)}>
             <MdAddBox className="h-8 w-8 text-blue-500 hover:text-blue-600" />
           </button>
         </div>
@@ -747,7 +730,7 @@ export default function Index() {
       </div>
       {
         displayCreate ? (
-          <CreateUser setFlag={setDisplayCreate} roles={roles} refetch={fetchUsers} />
+          <CreateUser flag={displayCreate} setFlag={setDisplayCreate} roles={roles} refetch={fetchUsers} />
         ) : null
       }
     </>

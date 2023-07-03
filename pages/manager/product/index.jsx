@@ -1,5 +1,5 @@
 import Loading from "@/components/loading";
-import Modal from "@/components/modal/Modal";
+import Modal from "@/components/modal";
 import { AppContext } from "@/context/app-context";
 import useBoolean from "@/hooks/useBoolean";
 import CategoryService from "@/services/category.service";
@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 
-const CreateProduct = ({ setFlag, refetch, categories }) => {
+const CreateProduct = ({ flag, setFlag, refetch, categories }) => {
     const [imageSrc, setImageSrc] = useState(undefined)
 
     const formId = useId()
@@ -61,7 +61,7 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
 
                 if (status === 200) {
                     toast.success("Create product successfully!")
-                    setFlag.off()
+                    setFlag(false)
                     refetch()
                     return
                 }
@@ -87,20 +87,11 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
     }, [image])
 
     return (
-        <Modal setFlag={setFlag}>
-            <div className="h-full w-md flex flex-col overflow-y-auto bg-white rounded shadow border space-y-5">
-                <div className="flex justify-between shadow p-5">
-                    <h2 className="text-indigo-500 font-medium text-lg">Create product</h2>
-                    <button
-                        onClick={setFlag.off}
-                        className="text-gray-400 h-6 w-6 p-0.5 rounded-full hover:text-white hover:bg-red-500 transition-colors duration-200"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-full h-full">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
+        <Modal
+            isOpen={flag}
+            onClose={() => setFlag(false)}
+            headerName="Create product"
+            bodyTemplate={(
                 <form
                     id={formId}
                     onSubmit={handleSubmit}
@@ -145,8 +136,6 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
                                     ) : null
                                 }
                             </div>
-
-
                         </div>
 
                         <label className="space-y-1">
@@ -222,7 +211,6 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
                         }
                     </div>
 
-
                     <div className="space-y-1">
                         <label className="text-gray-700">Price</label>
                         <input
@@ -281,6 +269,8 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
                     </div>
 
                 </form>
+            )}
+            buttonsTemplate={(
                 <div className="flex justify-end px-5 py-2 space-x-5 border-t">
                     <button
                         type="submit"
@@ -292,21 +282,21 @@ const CreateProduct = ({ setFlag, refetch, categories }) => {
                     </button>
                     <button
                         className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
-                        onClick={setFlag.off}
+                        onClick={() => setFlag(false)}
                         type="button"
                     >
                         Cancel
                     </button>
                 </div>
-            </div>
-
+            )}
+        >
         </Modal>
     )
 }
 
 const Product = ({ product, categories, refetch }) => {
     const { id } = product
-    const [displayUpdate, setDisplayUpdate] = useBoolean(false)
+    const [displayUpdate, setDisplayUpdate] = useState(false)
     const [imageSrc, setImageSrc] = useState(undefined)
 
     const formId = useId()
@@ -352,7 +342,7 @@ const Product = ({ product, categories, refetch }) => {
 
                 if (status === 200) {
                     toast.success("Update product successfully!")
-                    setDisplayUpdate.off()
+                    setDisplayUpdate(false)
                     refetch()
                     return
                 }
@@ -373,7 +363,7 @@ const Product = ({ product, categories, refetch }) => {
 
         if (status === 200) {
             toast.success("Delete product successfully!")
-            setDisplayUpdate.off()
+            setDisplayUpdate(false)
             refetch()
             return
         }
@@ -399,7 +389,7 @@ const Product = ({ product, categories, refetch }) => {
         <>
             <li
                 className="min-w-full flex items-center space-x-5 w-max border-b rounded py-2 px-5 cursor-pointer hover:bg-gray-300 transition-all"
-                onClick={setDisplayUpdate.on}
+                onClick={() => setDisplayUpdate(true)}
             >
                 <div className="w-56 flex-none flex items-center space-x-2">
 
@@ -411,23 +401,11 @@ const Product = ({ product, categories, refetch }) => {
                 <div className="w-20 flex-none">{product.quantity}</div>
                 <div className="grow">{product.description}</div>
             </li>
-            {
-                displayUpdate ? (
-
-                    <Modal setFlag={setDisplayUpdate}>
-                        <div className="h-full w-md flex flex-col overflow-y-auto bg-white rounded shadow border space-y-5">
-                            <div className="flex justify-between shadow p-5">
-                                <h2 className="text-indigo-500 font-medium text-lg">Product</h2>
-                                <button
-                                    onClick={setDisplayUpdate.off}
-                                    className="text-gray-400 h-6 w-6 p-0.5 rounded-full hover:text-white hover:bg-red-500 transition-colors duration-200"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-full h-full">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-
-                            </div>
+                    <Modal
+                        headerName="Product"
+                        isOpen={displayUpdate}
+                        onClose={() => {setDisplayUpdate(false)}}
+                        bodyTemplate={(
                             <form
                                 id={formId}
                                 onSubmit={handleSubmit}
@@ -608,6 +586,8 @@ const Product = ({ product, categories, refetch }) => {
                                 </div>
 
                             </form>
+                        )}
+                        buttonsTemplate={(
                             <div className="flex justify-end px-5 py-2 space-x-5 border-t">
                                 <button
                                     type="submit"
@@ -627,18 +607,16 @@ const Product = ({ product, categories, refetch }) => {
                                 </button>
                                 <button
                                     className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
-                                    onClick={setDisplayUpdate.off}
+                                    onClick={() => setDisplayUpdate(false)}
                                     type="button"
                                 >
                                     Cancel
                                 </button>
 
                             </div>
-                        </div>
-
+                        )}
+                    >
                     </Modal>
-                ) : null
-            }
         </>
 
     )
@@ -650,7 +628,7 @@ export default function Index() {
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
-    const [displayCreate, setDisplayCreate] = useBoolean(false)
+    const [displayCreate, setDisplayCreate] = useState(false)
 
 
     const fetchProduct = useCallback(async () => {
@@ -683,7 +661,7 @@ export default function Index() {
             <div className="border rounded shadow bg-white p-2">
                 <div className="p-5 flex items-center justify-between">
                     <div className="font-bold text-xl text-gray-800">Products</div>
-                    <button onClick={setDisplayCreate.toggle}>
+                    <button onClick={() => setDisplayCreate(true)}>
                         <MdAddBox className="h-8 w-8 text-blue-500 hover:text-blue-600" />
                     </button>
                 </div>
@@ -711,7 +689,7 @@ export default function Index() {
             </div>
             {
                 displayCreate ? (
-                    <CreateProduct setFlag={setDisplayCreate} refetch={fetchProduct} categories={categories} />
+                    <CreateProduct flag={displayCreate} setFlag={setDisplayCreate} refetch={fetchProduct} categories={categories} />
                 ) : null
             }
         </>
