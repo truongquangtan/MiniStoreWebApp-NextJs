@@ -1,7 +1,7 @@
+import WorksheetScheduledView from "@/components/page-reuse/WorksheetScheduledView";
+
 export default function Index(props) {
     return (
-        <div>
-            Sale worksheet page
-        </div>
+        <WorksheetScheduledView />
     )
 }

@@ -44,7 +44,7 @@ const Breadcrumb = (props) => {
   }
 
   return (
-    <nav className="my-4 z-auto relative flex flex-row flex-wrap items-center justify-between rounded-xl backdrop-blur-xl dark:bg-[#0b14374d]">
+    <nav className="my-4 z-[1] relative flex flex-row flex-wrap items-center justify-between rounded-xl backdrop-blur-xl dark:bg-[#0b14374d]">
       <div>
         <div className="h-6 w-[224px] pt-1">
           <a

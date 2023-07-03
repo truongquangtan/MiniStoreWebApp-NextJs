@@ -31,10 +31,10 @@ const AdminLayout = (props) => {
   return (
     <>
       <Sidebar open={open} onClose={() => setOpen(false)}/>
-      <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
+      <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900 relative !z-[1]">
         <main className={`mx-[12px] h-[100vh] p-2 overflow-auto flex-none transition-all xl:ml-[310px]`}>
           <Breadcrumb onOpenSidenav={() => setOpen(true)} brandText={pageName}/>
-          <div>{props.children}</div>
+          <div className="relative z-[0]">{props.children}</div>
         </main>
       </div>
     </>

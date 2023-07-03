@@ -10,6 +10,13 @@ class TimesheetSchedulerService {
             useMyAxios().get(serviceUrl)
         )
     }
+    static async getScheduledTimesheetsOfUser(startDate, endDate) {
+        const serviceUrl = `${url.timesheetScheduler.schedule}?startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`
+
+        return await wrapperCallApi(
+            useMyAxios().get(serviceUrl)
+        )
+    }
 
     static async scheduler(payload) {
         const serviceUrl = url.timesheetScheduler.schedule
