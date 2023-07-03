@@ -43,6 +43,16 @@ const WorksheetTableView = ({schedulerData}) => {
     }
 
     return (
-        <Scheduler events={schedulerData} week={weekConfig} day={null} month={null} editable={false} deletable={false} hourFormat="24" />
+        <Scheduler
+            events={schedulerData}
+            week={weekConfig}
+            day={null}
+            month={null}
+            editable={false}
+            deletable={false}
+            hourFormat="24"
+            onEventClick={null}
+            customEditor={(scheduler) => scheduler.close()}
+        />
     )
 }
