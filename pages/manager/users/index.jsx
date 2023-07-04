@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/common/currencyFormatHelper";
 import Loading from "@/components/loading";
 import Modal from "@/components/modal";
 import { AppContext } from "@/context/app-context";
@@ -435,6 +436,7 @@ const User = ({ user, roles, refetch }) => {
             }
           </div>
         </div>
+        <div className="w-24 font-bold text-blue-700 flex-none truncate">{formatCurrency(user.salary)}</div>
         <div className="w-56 flex-none truncate">{user.phone}</div>
         <div className="w-56 flex-none truncate">{user.email}</div>
         <div className="w-20 flex-none truncate">{user.role.name}</div>
@@ -715,6 +717,7 @@ export default function Index() {
               <ul className="min-w-full text-gray-800 w-max">
                 <li className="min-w-full flex space-x-5 w-max border-b py-2 px-5">
                   <div className="w-56 font-medium flex-none">Full Name</div>
+                  <div className="w-24 font-medium flex-none">Salary</div>
                   <div className="w-56 font-medium flex-none">Phone</div>
                   <div className="w-56 font-medium flex-none">Email</div>
                   <div className="w-20 font-medium flex-none">Role</div>

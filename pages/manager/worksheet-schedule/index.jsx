@@ -16,6 +16,7 @@ import SelectBox from "@/components/form/select_box";
 import RoleService from "@/services/role.service";
 import UserService from "@/services/user.service";
 import TimesheetSchedulerService from "@/services/timesheet-scheduler.service";
+import { formatCurrency } from "@/common/currencyFormatHelper";
 
 export default function Index(props) {
   const [isRequestTabOpen, setIsRequestTabOpen] = useState(true)
@@ -287,7 +288,7 @@ export default function Index(props) {
                 <Label forField="Salary">Salary</Label>
                 <TextInput
                   id="Salary"
-                  value={selectedTimesheet?.salary}
+                  value={formatCurrency(selectedTimesheet?.salary)}
                   name="Salary"
                   readOnly
                 />
@@ -503,7 +504,7 @@ export default function Index(props) {
                         <div className="w-[10%] flex-none truncate">{schedule.timeSheet.timeRange}</div>
                         <div className="w-[15%] flex-none truncate">{moment(schedule.date).format("DD/MM/yyyy")}</div>
                         <div className="w-[20%] flex-none truncate">{schedule.user.fullname}</div>
-                        <div className="w-[10%] flex-none truncate">{schedule.salary}</div>
+                        <div className="w-[10%] flex-none truncate">{formatCurrency(schedule.salary)}</div>
                         <div className="w-[10%] flex-none truncate">{moment(schedule.createdAt).format("DD/MM/yyyy hh:mm:ss")}</div>
                         <div className="grow text-center">
                           <button className="text-red-600 hover:text-red-700" onClick={() => onDeleteClick(schedule.id)}>

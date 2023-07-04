@@ -6,6 +6,7 @@ import CheckAttendanceService from "@/services/check-attendance.service";
 import { toast } from "react-toastify";
 import moment from "moment";
 import UserService from "@/services/user.service";
+import { formatCurrency } from "@/common/currencyFormatHelper";
 
 export default function AttendancePage(props) {
   const [isTableUnCheckedLoading, setIsTableUnCheckedLoading] = useState(false)
@@ -97,7 +98,7 @@ export default function AttendancePage(props) {
                           <div className="w-[15%] flex-none truncate">{timesheet.timeSheet.name}</div>
                           <div className="w-[15%] flex-none truncate">{moment(timesheet.startTime).format("DD/MM/yyyy HH:mm:ss")}</div>
                           <div className="w-[15%] flex-none truncate">{moment(timesheet.endTime).format("DD/MM/yyyy HH:mm:ss")}</div>
-                          <div className="w-[10%] flex-none truncate">{timesheet.salary}</div>
+                          <div className="w-[10%] flex-none truncate">{formatCurrency(timesheet.salary)}</div>
                           {timesheet.isChecked ? (
                             <div className="w-[10%] flex-none truncate text-green-600 font-semibold">ATTENTED</div>
                           ) : (
@@ -119,7 +120,7 @@ export default function AttendancePage(props) {
       <main className="border rounded shadow bg-white p-2 mt-4">
         <div className="flex items-center justify-between">
           <div className="font-bold text-2xl p-2 text-gray-800 mb-3">Attendance History</div>
-          <div className="font-semibold px-8 py-1 bg-blue-50 text-blue-700 rounded-md">Your current salary this month: {user?.salary ? user?.salary : 0}</div>
+          <div className="font-semibold px-8 py-1 bg-blue-50 text-blue-700 rounded-md">Your current salary this month: {user?.salary ? formatCurrency(user?.salary) : 0}</div>
         </div>
         <div className="transition-all duration-500">
           {
@@ -146,7 +147,7 @@ export default function AttendancePage(props) {
                           <div className="w-[15%] flex-none truncate">{timesheet.timeSheet.name}</div>
                           <div className="w-[15%] flex-none truncate">{moment(timesheet.startTime).format("DD/MM/yyyy HH:mm:ss")}</div>
                           <div className="w-[15%] flex-none truncate">{moment(timesheet.endTime).format("DD/MM/yyyy HH:mm:ss")}</div>
-                          <div className="w-[10%] flex-none truncate">{timesheet.salary}</div>
+                          <div className="w-[10%] flex-none truncate">{formatCurrency(timesheet.salary)}</div>
                           {timesheet.isChecked ? (
                             <div className="w-[10%] flex-none truncate text-green-600 font-semibold">ATTENTED</div>
                           ) : (

@@ -9,6 +9,7 @@ import { buttonTypes } from "@/common/type";
 import TimesheetRegisterService from "@/services/timesheet-register.service";
 import Loading from "@/components/loading";
 import ModalComponent from "@/components/modal";
+import { formatCurrency } from "@/common/currencyFormatHelper";
 
 // Bug: Sau send request -> load more -> pick chỗ load more không được
 // Not implemented: Admin
@@ -185,7 +186,7 @@ export default function Index(props) {
                       className={`${timesheetCell.isSelected === true ? 'bg-blue-200 hover:bg-red-400' : 'bg-gray-100 hover:bg-blue-200'} ${timesheetCell.isPicked === true ? '!bg-gray-300' : 'hover:cursor-pointer'} w-12 h-8 flex items-center relative justify-center font-sm font-semibold text-center grow`}
                       onClick={() => { if (!timesheetCell.isPicked) { onCellClick(salaryTimesheet, timesheetCell) } }}
                     >
-                      {timesheetCell.salary}
+                      {formatCurrency(timesheetCell.salary)}
                       {timesheetCell.note ?
                         (<Tooltip title={timesheetCell.note} placement="top" arrow>
                           <div className="absolute right-1">
@@ -252,7 +253,7 @@ export default function Index(props) {
                         <div className="w-[20%] flex-none truncate">{request.timeSheet.name}</div>
                         <div className="w-[10%] flex-none truncate">{request.timeSheet.timeRange}</div>
                         <div className="w-[15%] flex-none truncate">{moment(request.date).format("DD/MM/yyyy")}</div>
-                        <div className="w-[10%] flex-none truncate">{request.salary}</div>
+                        <div className="w-[10%] flex-none truncate">{formatCurrency(request.salary)}</div>
                         <div className="w-[10%] flex-none truncate">{request.note}</div>
                         <div className="w-[15%] flex-none truncate">{moment(request.createdAt).format("DD/MM/yyyy hh:mm:ss")}</div>
                         <div className="grow text-center">

@@ -1,5 +1,7 @@
+import OrderPage from "@/components/page-reuse/Order";
+
 export default function Index(props) {
     return (
-        <div>Sales Order page</div>
+        <OrderPage />
     )
 }

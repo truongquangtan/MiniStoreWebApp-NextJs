@@ -19,13 +19,6 @@ import {ImUserCheck} from "react-icons/im"
 const routes = {
   manager: [
     {
-      name: "Main Dashboard",
-      layout: "/manager",
-      path: "default",
-      icon: <MdHome className="h-6 w-6" />,
-      isActive: false,
-    },
-    {
       name: "Users",
       layout: "/manager",
       path: "users",
@@ -37,13 +30,6 @@ const routes = {
       layout: "/manager",
       path: "product",
       icon: <MdCategory className="h-6 w-6" />,
-      isActive: false,
-    },
-    {
-      name: "Salary",
-      layout: "/manager",
-      path: "salary",
-      icon: <MdOutlineAttachMoney className="h-6 w-6" />,
       isActive: false,
     },
     {
@@ -65,13 +51,6 @@ const routes = {
       layout: "/manager",
       path: "worksheet-schedule",
       icon: <MdCalendarMonth className="h-6 w-6" />,
-      isActive: false,
-    },
-    {
-      name: "Vouchers",
-      layout: "/manager",
-      path: "voucher",
-      icon: <MdSell className="h-6 w-6" />,
       isActive: false,
     }
   ],
@@ -98,6 +77,13 @@ const routes = {
       isActive: false,
     },
     {
+      name: "Products and Categories",
+      layout: "/sales",
+      path: "product",
+      icon: <MdCategory className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
       name: "Orders",
       layout: "/sales",
       path: "orders",
@@ -110,7 +96,7 @@ const routes = {
       path: "profile",
       icon: <MdPerson className="h-6 w-6" />,
       isActive: false,
-    }
+    },
   ],
   guard: [
     {
