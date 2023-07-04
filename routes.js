@@ -14,6 +14,8 @@ import {
   MdPerson
 } from "react-icons/md";
 
+import {ImUserCheck} from "react-icons/im"
+
 const routes = {
   manager: [
     {
@@ -75,6 +77,13 @@ const routes = {
   ],
   sales: [
     {
+      name: "Check Attendance",
+      layout: "/sales",
+      path: "attendance",
+      icon: <ImUserCheck className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
       name: "Worksheets",
       layout: "/sales",
       path: "worksheet",
@@ -97,13 +106,20 @@ const routes = {
     },
     {
       name: "Profile",
-      layout: "/guard",
+      layout: "/sales",
       path: "profile",
       icon: <MdPerson className="h-6 w-6" />,
       isActive: false,
     }
   ],
   guard: [
+    {
+      name: "Check Attendance",
+      layout: "/guard",
+      path: "attendance",
+      icon: <ImUserCheck className="h-6 w-6" />,
+      isActive: false,
+    },
     {
       name: "Worksheets",
       layout: "/guard",

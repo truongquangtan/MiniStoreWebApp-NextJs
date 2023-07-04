@@ -35,6 +35,10 @@ const url = {
     auth: {
         login: `${host}/auth/login`,
         logout: `${host}/auth/logout`,
+    },
+    attendanceCheck: {
+        base: `${host}/attendance-check`,
+        checked: `${host}/attendance-check/checked`
     }
 }
 
