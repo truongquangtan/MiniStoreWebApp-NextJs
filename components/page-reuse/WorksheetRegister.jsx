@@ -98,11 +98,21 @@ export default function Index(props) {
       }
     }
     if (request.length > 0) {
-      const { error } = await TimesheetRegisterService.register(request)
+      const { error, data } = await TimesheetRegisterService.register(request)
       if (error) {
-        toast.error("Create request failed")
+        toast.error("Create all request failed")
+        return
       }
-      toast.success("Create request successfully.")
+      
+      for (const errorData of data.errorsData){
+        toast.warning(errorData.errorMessage)
+      }
+      
+      if (data.isContainErrors === true) {
+        toast.error("Error in some worksheet")
+      } else {
+        toast.success("Create request successfully.")
+      }
       fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), Math.ceil(moment(curEndDate, "yyyy-MM-DD").diff(moment(new Date()), "d")) + 1)
       fetchRequestedTimesheet()
     }

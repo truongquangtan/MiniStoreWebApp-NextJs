@@ -31,7 +31,7 @@ export default function WorksheetScheduledView(props) {
     }, [])
 
     return (
-        schedulerData && schedulerData.length > 0 && <WorksheetTableView schedulerData={schedulerData}/>
+        schedulerData && schedulerData.length > 0 ? <div>No scheduled timesheet</div> : <WorksheetTableView schedulerData={schedulerData}/>
     )
 }
 

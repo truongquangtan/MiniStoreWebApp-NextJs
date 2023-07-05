@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { Avatar, AvatarGroup, FormLabel, IconButton, Tooltip } from "@mui/material";
 import Button from "@/components/button";
 import { buttonTypes } from "@/common/type";
-import TimesheetRegisterService from "@/services/timesheet-register.service";
 import Loading from "@/components/loading";
 import ModalComponent from "@/components/modal";
 import MultiSelect from "@/components/multi-select";
@@ -165,10 +164,16 @@ export default function Index(props) {
 
     //Call API
     if(isInAddProcess) {
-      const {error} = await TimesheetSchedulerService.scheduler(payload)
+      const {error, data} = await TimesheetSchedulerService.scheduler(payload)
       if(error){
         toast.error("Cannot register now, try again later")
-      } else {
+        return
+      }
+      for (const errorData of data.errorsData){
+        toast.warning(errorData.errorMessage)
+        break
+      }
+      if(data.isContainErrors === false){
         toast.success("Schedule the worksheet successfully.")
       }
     } else {
@@ -178,9 +183,9 @@ export default function Index(props) {
         salary: selectedTimesheet.salary,
         date: selectedTimesheet.date,
       }
-      const {error} = await TimesheetSchedulerService.updateScheduler(updatePayload)
+      const {error, data} = await TimesheetSchedulerService.updateScheduler(updatePayload)
       if(error){
-        toast.error("Cannot update now, try again later")
+        toast.error(data.data)
       } else {
         toast.success("Update the worksheet successfully.")
       }

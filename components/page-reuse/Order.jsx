@@ -394,7 +394,7 @@ const Order = ({ order, refetch }) => {
   return (
     <li className="min-w-full">
       <div
-        className="flex space-x-5 w-max border-b py-2 px-5 cursor-pointer hover:bg-gray-300 transition-all"
+        className="min-w-full flex space-x-5 w-max border-b py-2 px-5 cursor-pointer hover:bg-gray-300 transition-all"
         onClick={() => setDisplay(true)}
       >
         <div className="w-56 text-indigo-500 flex-none">#{parseInt(order.id, 16).toString().padStart(5, "0")}</div>
