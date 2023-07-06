@@ -158,7 +158,7 @@ export default function AttendancePage(props) {
                           </div>
                         </li>
                       ))
-                      : <div className="text-gray-500 font-semibold w-full flex">No data</div>
+                      : <div className="text-gray-500 font-semibold w-full flex justify-center">No data</div>
                   }
                 </ul>
               </div>

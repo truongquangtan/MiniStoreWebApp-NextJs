@@ -7,6 +7,11 @@ class CategoryService {
             useMyAxios().get(url.category.base)
         )
     }
+    static async add(categoryName) {
+        return await wrapperCallApi(
+            useMyAxios().post(url.category.base, {name: categoryName})
+        )
+    }
 }
 
 export default CategoryService

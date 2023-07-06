@@ -101,9 +101,10 @@ export default function Index(props) {
             <div className="w-full overflow-auto max-h-[25vh]">
               <ul className="min-w-full text-gray-800 w-max">
                 <li className="min-w-full flex space-x-5 w-max border-b py-2 px-5">
-                  <div className="w-[30%] font-medium flex-none">Name</div>
-                  <div className="w-[40%] font-medium flex-none">Time range</div>
+                  <div className="w-[20%] font-medium flex-none">Name</div>
+                  <div className="w-[20%] font-medium flex-none">Time range</div>
                   <div className="w-[20%] font-medium flex-none">Status</div>
+                  <div className="w-[20%] font-medium flex-none">Coefficient amount</div>
                   <div className="font-medium flex-none">Actions</div>
                 </li>
                 {
@@ -112,10 +113,13 @@ export default function Index(props) {
                       key={worksheet.id}
                       className="min-w-full flex space-x-5 w-max border-b rounded py-2 px-5 transition-all"
                     >
-                      <div className="w-[30%] flex-none truncate">{worksheet.name}</div>
-                      <div className="w-[40%] flex-none truncate">{worksheet.timeRange}</div>
+                      <div className="w-[20%] flex-none truncate">{worksheet.name}</div>
+                      <div className="w-[20%] flex-none truncate">{worksheet.timeRange}</div>
                       <div className="w-[20%] flex-none truncate">
                         {worksheet.isActive ? "Active" : "Inactive"}
+                      </div>
+                      <div className="w-[10%] flex-none truncate">
+                        {worksheet.coefficientAmount}
                       </div>
                       <div className="grow text-center">
                         <button className="text-red-600 hover:text-red-700" onClick={() => onDeleteClick(worksheet)}>
@@ -148,9 +152,10 @@ export default function Index(props) {
             <div className="w-full overflow-auto max-h-[25vh]">
               <ul className="min-w-full text-gray-800 w-max">
                 <li className="min-w-full flex space-x-5 w-max border-b py-2 px-5">
-                  <div className="w-[30%] font-medium flex-none">Name</div>
-                  <div className="w-[40%] font-medium flex-none">Time range</div>
+                  <div className="w-[20%] font-medium flex-none">Name</div>
+                  <div className="w-[20%] font-medium flex-none">Time range</div>
                   <div className="w-[20%] font-medium flex-none">Status</div>
+                  <div className="w-[20%] font-medium flex-none">Coefficient Amount</div>
                   <div className="font-medium flex-none">Actions</div>
                 </li>
                 {
@@ -159,10 +164,13 @@ export default function Index(props) {
                       key={worksheet.id}
                       className="min-w-full flex space-x-5 w-max border-b rounded py-2 px-5 transition-all"
                     >
-                      <div className="w-[30%] flex-none truncate">{worksheet.name}</div>
-                      <div className="w-[40%] flex-none truncate">{worksheet.timeRange}</div>
+                      <div className="w-[20%] flex-none truncate">{worksheet.name}</div>
+                      <div className="w-[20%] flex-none truncate">{worksheet.timeRange}</div>
                       <div className="w-[20%] flex-none truncate">
                         {worksheet.isActive ? "Active" : "Inactive"}
+                      </div>
+                      <div className="w-[20%] flex-none truncate">
+                        {worksheet.coefficientAmount}
                       </div>
                       <div className="grow text-center">
                         <button className="text-red-600 hover:text-red-700" onClick={() => onDeleteClick(worksheet)}>
@@ -212,13 +220,15 @@ const CreateWorksheet = ({ setFlag, refetch }) => {
         startTime: "",
         endTime: "",
         worksheetName: "",
+        coefficientAmount: 1,
       },
       validationSchema: Yup.object().shape(
         {
           role: Yup.mixed().nonNullable("Role invalid. Please try again.").required("Role is required."),
           startTime: Yup.string().required(),
           endTime: Yup.string().required(),
-          worksheetName: Yup.string().matches(REGEX.noBlank, "Full name invalid. Please try again.").required("Full name is required.")
+          worksheetName: Yup.string().matches(REGEX.noBlank, "Full name invalid. Please try again.").required("Full name is required."),
+          coefficientAmount: Yup.number().typeError("Coefficient amount invalid.").min(0, "Coefficient amount min is 0").required("Coefficient amount is required.")
         }
       ),
       onSubmit: async ({ role, startTime, endTime, worksheetName }) => {
@@ -226,6 +236,7 @@ const CreateWorksheet = ({ setFlag, refetch }) => {
           roleId: role.id,
           timeRange: `${startTime}-${endTime}`,
           name: worksheetName,
+          coefficientAmount: coefficientAmount,
         }
 
         console.log(payload)
@@ -246,7 +257,7 @@ const CreateWorksheet = ({ setFlag, refetch }) => {
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched, isValid, isSubmitting, setFieldValue } = formik
 
-  const { role, startTime, endTime, worksheetName } = values
+  const { role, startTime, endTime, worksheetName, coefficientAmount } = values
 
   return (
     <ModalComponent
@@ -326,6 +337,22 @@ const CreateWorksheet = ({ setFlag, refetch }) => {
                 {
                   errors.endTime && touched.endTime ? (
                     <FormErrorText className="font-medium text-xs text-red-500">{errors.endTime}</FormErrorText>
+                  ) : null
+                }
+              </div>
+              <div className="space-y-1">
+                <Label forField="coefficient-amount">Coefficient amount</Label>
+                <TextInput
+                  id="coefficient-amount"
+                  value={coefficientAmount}
+                  name="coefficient-amount"
+                  onChange={(e) => setFieldValue("coefficientAmount", e.target.value, true)}
+                  onBlur={handleBlur}
+                  ariaInvalid={Boolean(errors.coefficientAmount && touched.coefficientAmount)}
+                />
+                {
+                  errors.coefficientAmount && touched.coefficientAmount ? (
+                    <FormErrorText className="font-medium text-xs text-red-500">{errors.coefficientAmount}</FormErrorText>
                   ) : null
                 }
               </div>

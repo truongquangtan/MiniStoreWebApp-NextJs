@@ -155,7 +155,7 @@ const Breadcrumb = (props) => {
 
               <div className="mt-3 ml-4 flex flex-col">
                 <a
-                  href=" "
+                  href="./profile"
                   className="text-sm text-gray-800 hover:font-medium"
                 >
                   Profile Settings

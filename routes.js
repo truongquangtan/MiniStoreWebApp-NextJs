@@ -11,7 +11,8 @@ import {
   MdPermIdentity,
   MdAddCard,
   MdCalendarMonth,
-  MdPerson
+  MdPerson,
+  MdProductionQuantityLimits
 } from "react-icons/md";
 
 import {ImUserCheck} from "react-icons/im"
@@ -77,9 +78,16 @@ const routes = {
       isActive: false,
     },
     {
-      name: "Products and Categories",
+      name: "Products",
       layout: "/sales",
       path: "product",
+      icon: <MdProductionQuantityLimits className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
+      name: "Categories",
+      layout: "/sales",
+      path: "categories",
       icon: <MdCategory className="h-6 w-6" />,
       isActive: false,
     },
