@@ -13,8 +13,8 @@ const localStorageKey = {
 
 const defaultRoute = {
     MANAGER: '/manager/users',
-    SALES: '/sales/worksheet',
-    GUARD: '/guard/worksheet',
+    SALES: '/sales/attendance',
+    GUARD: '/guard/attendance',
     UNAUTHENTICATED: '/auth/login',
 }
 
