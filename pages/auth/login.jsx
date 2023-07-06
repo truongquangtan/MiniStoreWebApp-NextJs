@@ -107,17 +107,6 @@ export default function Login(props) {
         >
           Sign In
         </button>
-        <div className="mt-4">
-          <span className=" text-sm font-medium text-navy-700 dark:text-gray-600">
-            Not registered yet?
-          </span>
-          <a
-            href=" "
-            className="ml-1 text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
-          >
-            Create an account
-          </a>
-        </div>
       </div>
       <div className="">
         <Image src="/img/auth/welcome-images.jpg" alt="welcome" width="704" height="396" />
