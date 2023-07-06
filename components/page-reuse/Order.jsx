@@ -432,10 +432,6 @@ const Order = ({ order, refetch }) => {
                 <p className="w-24 flex-none font-medium">Created At</p>
                 <p className="grow">{new Date(order.createdAt).toDateString()}</p>
               </div>
-              <div className="flex">
-                <p className="w-24 flex-none font-medium">Created At</p>
-                <p className="grow">{new Date(order.createdAt).toDateString()}</p>
-              </div>
               <p className="font-medium text-center">Items</p>
               <div className="min-w-full w-max overflow-x-auto space-y-1">
                 <div className="border-b px-2 py-1.5 flex space-x-2">
