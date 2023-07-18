@@ -12,6 +12,11 @@ class CategoryService {
             useMyAxios().post(url.category.base, {name: categoryName})
         )
     }
+    static async remove(id) {
+        return await wrapperCallApi(
+            useMyAxios().delete(url.category.base + "/" + id)
+        )
+    }
 }
 
 export default CategoryService

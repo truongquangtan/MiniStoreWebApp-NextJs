@@ -459,14 +459,14 @@ const Order = ({ order, refetch }) => {
           )}
           buttonsTemplate={(
             <div className="flex justify-end px-5 py-2 space-x-5 border-t">
-              <button
+              {/* <button
                 type="button"
                 onClick={deleteOrder}
                 disabled={submitting}
                 className="px-5 py-1 bg-red-500 disabled:opacity-50 text-white rounded hover:opacity-95 transition-opacity"
               >
                 Delete
-              </button>
+              </button> */}
               <button
                 className="px-5 py-1 text-indigo-500 rounded hover:bg-zinc-200 transition-colors"
                 onClick={() => setDisplay(false)}

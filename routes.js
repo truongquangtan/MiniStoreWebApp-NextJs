@@ -27,9 +27,16 @@ const routes = {
       isActive: false,
     },
     {
-      name: "Products and Categories",
+      name: "Products",
       layout: "/manager",
       path: "product",
+      icon: <MdProductionQuantityLimits className="h-6 w-6" />,
+      isActive: false,
+    },
+    {
+      name: "Categories",
+      layout: "/manager",
+      path: "categories",
       icon: <MdCategory className="h-6 w-6" />,
       isActive: false,
     },
