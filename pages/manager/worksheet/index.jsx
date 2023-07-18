@@ -239,8 +239,6 @@ const CreateWorksheet = ({ setFlag, refetch }) => {
           coefficientAmount: coefficientAmount,
         }
 
-        console.log(payload)
-
         const { status } = await WorksheetService.create(payload)
 
         if (status === 200) {

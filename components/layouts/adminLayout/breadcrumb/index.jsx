@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { getAvatar, getName, getRole, removeAllData } from "@/common/authStore";
 import constants from "@/common/constants";
@@ -11,8 +11,10 @@ import {
   IoMdNotificationsOutline,
 } from "react-icons/io";
 import moment from "moment";
+import { AppContext } from "@/context/app-context";
 
-const Breadcrumb = ({notificationData, onLogoutCallback, ...props}) => {
+const Breadcrumb = ({notificationData, ...props}) => {
+  const [pageName, setPageName, connection, setConnection, connectionId, setConnectionId] = useContext(AppContext)
   const router = useRouter()
   const { onOpenSidenav, brandText } = props;
 
@@ -40,7 +42,9 @@ const Breadcrumb = ({notificationData, onLogoutCallback, ...props}) => {
   }, [])
 
   const onLogoutClick = () => {
-    onLogoutCallback()
+    if(connection && connectionId){
+      connection.send("RemoveConnection", connectionId)
+    }
     removeAllData()
     router.push('/auth/login')
   }

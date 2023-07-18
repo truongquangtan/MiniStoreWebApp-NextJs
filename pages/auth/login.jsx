@@ -4,14 +4,16 @@ import TextInput from "@/components/form/text_input";
 import AuthService from "@/services/auth.service";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useId, useState } from "react";
+import { useContext, useId, useState } from "react";
 import * as Yup from "yup";
-import {setAvatar, setName, setRole, setToken, setUserId} from "@/common/authStore"
+import {getUserId, setAvatar, setName, setRole, setToken, setUserId} from "@/common/authStore"
 import { useRouter } from "next/router";
 import constants from "@/common/constants";
+import { AppContext } from "@/context/app-context";
 
 export default function Login(props) {
   const [loginError, setLoginError] = useState("")
+  const [pageName, setPageName, connection, setConnection, connectionId, setConnectionId] = useContext(AppContext)
 
   const router = useRouter()
 
@@ -41,6 +43,10 @@ export default function Login(props) {
         setAvatar(data.data.avatar)
         setName(data.data.fullname)
         setUserId(data.data.id)
+
+        if(connection && connectionId){
+          connection.send("RegisterConnection", getUserId(), connectionId)
+        }
 
         router.push("/")
       }

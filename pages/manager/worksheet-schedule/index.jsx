@@ -195,7 +195,6 @@ export default function Index(props) {
       if(data.isContainErrors === false){
         toast.success("Schedule the worksheet successfully.")
       }
-      console.log(data)
       // Real-time notification
       if(connection){
         for(const userId of selectedUserIds){

@@ -16,10 +16,6 @@ const AdminLayout = (props) => {
   const [pageName, setPageName] = useContext(AppContext)
   const [notifications, setNotifications] = useState([])
 
-  //signalR
-  const [connection, setConnection] = useState(null)
-  const [connectionId, setConnectionId] = useState('')
-
   const [open, setOpen] = useState(true)
 
   const fetchNotifications = async () => {
@@ -31,42 +27,8 @@ const AdminLayout = (props) => {
     setNotifications(data)
   }
   useEffect(() => {
-    // SignalR init
-    const connect = new HubConnectionBuilder()
-                      .withUrl(url.notification.signalR)
-                      .withAutomaticReconnect()
-                      .build()
-    
-    setConnection(connect)
-
     fetchNotifications()
   }, [])
-  useEffect(() => {
-    if(connection) {
-      connection.start()
-      .then(() => {
-        connection.on("OnConnected", (data) => {
-          setConnectionId(data)
-        })
-        connection.on("OnReceivedNotification", (message) => {
-          toast.info(message, {
-            autoClose: false,
-          })
-          fetchNotifications()
-        })
-      })
-      .catch((error) => {console.log(error)})
-    }
-  }, [connection])
-  useEffect(() => {
-    if(connectionId && connection){
-      connection.send("RegisterConnection", getUserId(), connectionId)
-    }
-  }, [connectionId, connection])
-
-  const removeConnection = () => {
-    connection.stop()
-  }
 
   useEffect(() => {
     window.addEventListener("resize", () =>
@@ -88,7 +50,7 @@ const AdminLayout = (props) => {
       <Sidebar open={open} onClose={() => setOpen(false)}/>
       <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900 relative !z-[1]">
         <main className={`mx-[12px] h-[100vh] p-2 overflow-auto flex-none transition-all xl:ml-[310px]`}>
-          <Breadcrumb onOpenSidenav={() => setOpen(true)} brandText={pageName} notificationData={notifications} onLogoutCallback={() => removeConnection()}/>
+          <Breadcrumb onOpenSidenav={() => setOpen(true)} brandText={pageName} notificationData={notifications} />
           <div className="relative z-[0]">{props.children}</div>
         </main>
       </div>
