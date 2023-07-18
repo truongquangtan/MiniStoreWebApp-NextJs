@@ -138,6 +138,7 @@ export default function Index(props) {
     const { error } = await TimesheetRegisterService.deleteRange(payload)
     if (error) {
       toast.error("Delete fail")
+      return
     }
 
     toast.success("Delete request successfully")

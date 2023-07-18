@@ -16,8 +16,13 @@ import RoleService from "@/services/role.service";
 import UserService from "@/services/user.service";
 import TimesheetSchedulerService from "@/services/timesheet-scheduler.service";
 import { formatCurrency } from "@/common/currencyFormatHelper";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import url from "@/common/url";
+import { getUserId } from "@/common/authStore";
 
 export default function Index(props) {
+  const [connection, setConnection] = useState(null)
+
   const [isRequestTabOpen, setIsRequestTabOpen] = useState(true)
   const [isTableTabOpen, setIsTableTabOpen] = useState(false)
   const [isModalTabOpen, setIsModalTabOpen] = useState(false)
@@ -48,7 +53,21 @@ export default function Index(props) {
     curRole?.id && fetchTimesheetData(moment(new Date()).format("yyyy-MM-DD"), 7)
     setCurEndDate(moment(new Date()).add(7, 'days').format("yyyy-MM-DD"))
     fetchScheduledTimesheet(moment(new Date()).format("yyyy-MM-DD"), null)
+
+    // SignalR init
+    const connect = new HubConnectionBuilder()
+                      .withUrl(url.notification.signalR)
+                      .withAutomaticReconnect()
+                      .build()
+    
+    setConnection(connect)
   }, [])
+  useEffect(() => {
+    if(connection) {
+      connection.start()
+      .catch((error) => {console.log(error)})
+    }
+  }, [connection])
   useEffect(() => {
     if(curRole?.id){
       fetchAllUsersOfRole()
@@ -176,6 +195,13 @@ export default function Index(props) {
       if(data.isContainErrors === false){
         toast.success("Schedule the worksheet successfully.")
       }
+      console.log(data)
+      // Real-time notification
+      if(connection){
+        for(const userId of selectedUserIds){
+          connection.send("SendNotification", userId, "You have been scheduled a worksheet")
+        }
+      }
     } else {
       const updatePayload = {
         timesheetId: selectedTimesheet.timesheetId,
@@ -211,6 +237,7 @@ export default function Index(props) {
     const { error } = await TimesheetSchedulerService.delete(deleteId)
     if (error) {
       toast.error("Delete fail")
+      return
     }
 
     toast.success("Delete request successfully")

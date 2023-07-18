@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import Image from "next/image";
 import { useId, useState } from "react";
 import * as Yup from "yup";
-import {setAvatar, setName, setRole, setToken} from "@/common/authStore"
+import {setAvatar, setName, setRole, setToken, setUserId} from "@/common/authStore"
 import { useRouter } from "next/router";
 import constants from "@/common/constants";
 
@@ -40,6 +40,7 @@ export default function Login(props) {
         setRole(data.data.role)
         setAvatar(data.data.avatar)
         setName(data.data.fullname)
+        setUserId(data.data.id)
 
         router.push("/")
       }

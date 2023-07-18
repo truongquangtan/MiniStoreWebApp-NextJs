@@ -9,6 +9,7 @@ const localStorageKey = {
     token: 'token',
     avatar: 'avatar',
     name: 'name',
+    userId: 'userId',
 }
 
 const defaultRoute = {

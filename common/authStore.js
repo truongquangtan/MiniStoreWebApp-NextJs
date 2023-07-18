@@ -5,6 +5,7 @@ let jwtToken = '';
 let role = '';
 let avatar = '';
 let name = '';
+let userId = '';
 
 // Token
 export const setToken = token => {
@@ -79,13 +80,34 @@ export const removeName = () => {
     localStorage.removeItem(constants.localStorageKey.name)
 }
 
+
+//UserId
+export const setUserId = data => {
+    userId = data
+    localStorage.setItem(constants.localStorageKey.userId, data)
+}
+export const getUserId = () => {
+    if(userId) {
+        return userId
+    }
+
+    userId = localStorage.getItem(constants.localStorageKey.userId) ? localStorage.getItem(constants.localStorageKey.userId) : ''
+    return userId
+}
+export const removeUserId = () => {
+    userId = ''
+    localStorage.removeItem(constants.localStorageKey.userId)
+}
+
 export const removeAllData = () => {
     jwtToken = ''
     avatar = ''
     role = ''
     name = ''
+    userId = ''
     removeAvatar()
     removeRole()
     removeToken()
     removeName()
+    removeUserId()
 }
